@@ -1,0 +1,71 @@
+body, html {
+    height: 100%;
+}
+
+body {
+    font: 13px Helvetica, SansSerif;
+    background-color: var(--background-primary);
+    color: var(--content-primary);
+    margin-top: 0px;
+}
+
+#titleBar {
+	margin-top: 0rem;
+	margin-bottom: -1rem;
+	display: flex;
+	align-items: center;
+	width: 100%;
+    font-weight: lighter;
+	height: 5rem;
+}
+
+hr {
+    margin: 0rem;
+}
+
+#title {
+   /* margin-top: 1.4rem; */
+   margin-left: 1rem;
+   font-size: 1.8rem;
+}
+
+#subtitle {
+   margin-top: 1.8rem;
+   margin-left: 1rem;
+   font-size: 1rem;
+}
+
+#versionLabel {
+    margin-top: 8px;
+    font-size: 1rem;
+	float: right;
+}
+
+#board {
+    background-color: darkseagreen;
+    width: auto;
+    height: 100%;
+}
+
+.dealerHand {
+    display: flex;
+    position: relative;
+    top: 20%;
+    left: 50%;
+}
+
+.playerHand {
+    top: 50%;
+    left: 50%;
+}
+
+.card {
+    background-image: url("../img/playing_cards.svg");
+    background-repeat: no-repeat;
+
+    height: 540px;
+    width: 360px;
+    background-position: -421px -31px;
+
+    border-radius: 30px;
+}
