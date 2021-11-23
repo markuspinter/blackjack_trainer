@@ -1,9 +1,9 @@
 $(window).on("load", function()
 {
-    $(".dealerHand").append("<h1>test</h1>");
+    // $(".dealerHand").append("<h1>test</h1>");
     // setCardTexture($(".card")[0], "AS");
     // testCards();
-    setCardTexture($(".card")[0], "AS", true);
+    // setCardTexture($(".card")[0], "AS", true);
     // setInterval(() => {
     //     testCards();
     // }, 6000);

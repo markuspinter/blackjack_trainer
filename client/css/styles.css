@@ -1,5 +1,11 @@
+:root {
+    --cardScale: 0.5;
+}
+
 body, html {
     height: 100%;
+    width: 100%;
+    overflow: hidden; /* Hide scrollbars */
 }
 
 body {
@@ -43,29 +49,84 @@ hr {
 
 #board {
     background-color: darkseagreen;
-    width: auto;
     height: 100%;
+    width: auto;
 }
 
-.dealerHand {
+.btn {
+    height: 5rem;
+    width: 5rem;
+    /* border-radius: 50%; */
+}
+
+.dealerHand, .playerHand, .buttons {
     display: flex;
-    position: relative;
-    top: 20%;
-    left: 50%;
+    transform-origin: center;
+    justify-content: center;
+    align-items: center;  
+    margin: auto 0;
 }
 
-.playerHand {
-    top: 50%;
-    left: 50%;
+.container {
+    margin: 0;
+    margin-right: 0 !important;
+    padding: 0 0;
+}
+
+.cardContainer {
+    width: calc(360px * var(--cardScale));
+    height: calc(540px * var(--cardScale))
+}
+
+.card{
+    transform: scale(var(--cardScale)) translate(-50%, -50%);
 }
 
 .card {
-    background-image: url("../img/playing_cards.svg");
+    background-image: url("../img/back.png");
     background-repeat: no-repeat;
 
     height: 540px;
     width: 360px;
-    background-position: -421px -31px;
 
     border-radius: 30px;
+}
+
+.score {
+    align-self: flex-start;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 15%;
+    margin-right: 2rem;
+    background-color: white;   
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
+    padding-top: .65rem;
+    font-style: normal;
+    font-weight: lighter;
+}
+
+.score {
+    font-size: 1.5rem !important;
+    /* margin-top: 10%;
+    text-align: center;
+    vertical-align: middle; */
+}
+
+i {
+    font-size: 3rem;
+    font-style: normal;
+    font-weight: lighter;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.buttons button {
+    margin-right: 1rem;
+    margin-top: 4rem;
+}
+
+.hand {
+    padding-top: 4rem;
 }

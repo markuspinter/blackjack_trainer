@@ -28,14 +28,23 @@
     </div>
     <hr/>
 
-    <div id="board">
-        <div class="dealerHand">
-            <div class="card"></div>
+    <div id="board" class="container-fluid">
+        <div class="dealerHand hand row">
+            <span class="score">--</span>
         </div>
     
-        <div class="playerHand">
+        <div class="playerHand hand row">
+            <span class="score">--</span>
         </div>
-    
+        <div class="buttons row">
+            <button type="button" class="btn btn-light" onclick="bjSurrender(this)" data-toggle="tooltip" data-placement="bottom" title="Surrender (A)"><i class="bi bi-flag"></i></button>
+            <button type="button" class="btn btn-light" onclick="bjSplit(this)" data-toggle="tooltip" data-placement="bottom" title="Split (S)" style="transform: rotate(-90deg);"><i class="bi bi-arrows-expand"></i></button>
+            <button type="button" class="btn btn-light" onclick="bjDouble(this)" data-toggle="tooltip" data-placement="bottom" title="Double (D)"><i>x2</i></button>
+            <button type="button" class="btn btn-light" onclick="bjStand(this)" data-toggle="tooltip" data-placement="bottom" title="Stand (F)"><i class="bi bi-x-circle"></i></button>
+            <button type="button" class="btn btn-light" onclick="bjHit(this)" data-toggle="tooltip" data-placement="bottom" title="Hit (G)"><i class="bi bi-hand-index" style="margin-left: -0.6rem;"></i></button>
+
+            
+        </div>
 
     </div>
 
@@ -51,6 +60,7 @@
 
     <script src="js/card.js"></script>
     <script src="js/deck.js"></script>
+    <script src="js/blackjack.js"></script>
     <script src="js/main.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
