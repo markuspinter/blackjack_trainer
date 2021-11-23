@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>ECUI - Test Stand</title>
+    <title>Blackjack Trainer</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     
@@ -23,30 +23,55 @@
     <div id="titleBar" style="margin-bottom: -2rem;">
         
         <h1 id="title">BlackJack Trainer</h1>
-        <div></div>
+        <div class="form-check" style="margin: auto;">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" onchange="onShowHandTotal(this);" style="margin-top: 0rem;">
+            <label class="form-check-label" for="flexCheckChecked">
+              Show hand total
+            </label>
+          </div>
         <p id="versionLabel">v<span id="version">1.0.0</span></p>
     </div>
     <hr/>
-
-    <div id="board" class="container-fluid">
-        <div class="dealerHand hand row">
-            <span class="score">--</span>
-        </div>
-    
-        <div class="playerHand hand row">
-            <span class="score">--</span>
-        </div>
-        <div class="buttons row">
-            <button type="button" class="btn btn-light" onclick="bjSurrender(this)" data-toggle="tooltip" data-placement="bottom" title="Surrender (A)"><i class="bi bi-flag"></i></button>
-            <button type="button" class="btn btn-light" onclick="bjSplit(this)" data-toggle="tooltip" data-placement="bottom" title="Split (S)" style="transform: rotate(-90deg);"><i class="bi bi-arrows-expand"></i></button>
-            <button type="button" class="btn btn-light" onclick="bjDouble(this)" data-toggle="tooltip" data-placement="bottom" title="Double (D)"><i>x2</i></button>
-            <button type="button" class="btn btn-light" onclick="bjStand(this)" data-toggle="tooltip" data-placement="bottom" title="Stand (F)"><i class="bi bi-x-circle"></i></button>
-            <button type="button" class="btn btn-light" onclick="bjHit(this)" data-toggle="tooltip" data-placement="bottom" title="Hit (G)"><i class="bi bi-hand-index" style="margin-left: -0.6rem;"></i></button>
-
+    <div id="content" class="container-fluid">
+        <div class="row" style="height: 100%;">
+            <div class="col">
+                <div id="board" class="container-fluid justify-content-center">
+                    <div class="row justify-content-center">
+                        <div class="dealerHand hand col">
+                            <span class="score" hidden>--</span>
+                        </div>
+                    </div>
+                
+                    <div class="row justify-content-center">
+                          
+                        <div class="playerHand hand col">
+                            <span class="score" hidden>--</span>
+                        </div>
+                        <div class="playerHand hand col">
+                            <span class="score" hidden>--</span>
+                        </div>
+                    </div>
+                    <div class="buttons row justify-content-center">
+                        <button id="surrender" type="button" class="btn btn-light gameAction" onclick="bjSurrender(this)" data-toggle="tooltip" data-placement="bottom" title="Surrender (A)" disabled><i class="bi bi-flag"></i></button>
+                        <button id="split" type="button" class="btn btn-light gameAction" onclick="bjSplit(this)" data-toggle="tooltip" data-placement="bottom" title="Split (S)" disabled style="transform: rotate(-90deg);"><i class="bi bi-arrows-expand"></i></button>
+                        <button id="double" type="button" class="btn btn-light gameAction" onclick="bjDouble(this)" data-toggle="tooltip" data-placement="bottom" title="Double (D)" disabled><i>x2</i></button>
+                        <button id="stand" type="button" class="btn btn-light gameAction" onclick="bjStand(this)" data-toggle="tooltip" data-placement="bottom" title="Stand (F)" disabled><i class="bi bi-x-circle"></i></button>
+                        <button id="hit" type="button" class="btn btn-light gameAction" onclick="bjHit(this)" data-toggle="tooltip" data-placement="bottom" title="Hit (G)" disabled><i class="bi bi-hand-index" style="margin-left: -0.6rem;"></i></button>
             
+                        <button id="newRound" type="button" class="btn btn-light" onclick="bjNewRound(this)" data-toggle="tooltip" data-placement="bottom" title="New Round (R)" disabled><i class="bi bi-check2"></i></button>
+            
+                        
+                    </div>
+            
+                </div>
+            </div>
+            
+            <div id="chat" class="col-2">
+            </div>
         </div>
-
+        
     </div>
+    
 
     <script src="https://cdn.socket.io/4.4.0/socket.io.min.js" integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
@@ -58,6 +83,7 @@
         // });
     </script>
 
+    <script src="js/utils.js"></script>
     <script src="js/card.js"></script>
     <script src="js/deck.js"></script>
     <script src="js/blackjack.js"></script>

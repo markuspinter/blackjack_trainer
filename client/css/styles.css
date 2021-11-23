@@ -1,11 +1,13 @@
 :root {
-    --cardScale: 0.5;
+    --cardScale: 0.4;
+    --navbarHeight: 5rem;
 }
 
 body, html {
     height: 100%;
     width: 100%;
-    overflow: hidden; /* Hide scrollbars */
+    background-color: darkseagreen;
+    /* overflow: hidden; */
 }
 
 body {
@@ -17,16 +19,19 @@ body {
 
 #titleBar {
 	margin-top: 0rem;
-	margin-bottom: -1rem;
+	margin-bottom: 0 !important;
 	display: flex;
+    flex-direction: row;
 	align-items: center;
 	width: 100%;
     font-weight: lighter;
-	height: 5rem;
+	height: var(--navbarHeight);
+    background-color: white;
 }
 
 hr {
     margin: 0rem;
+    background-color: white;
 }
 
 #title {
@@ -44,7 +49,9 @@ hr {
 #versionLabel {
     margin-top: 8px;
     font-size: 1rem;
-	float: right;
+    float: right;
+    margin-left: auto;
+    margin-right: 2rem;
 }
 
 #board {
@@ -59,27 +66,32 @@ hr {
     /* border-radius: 50%; */
 }
 
-.dealerHand, .playerHand, .buttons {
+.hand, .buttons {
     display: flex;
     transform-origin: center;
     justify-content: center;
-    align-items: center;  
+    align-items: center;
     margin: auto 0;
 }
 
-.container {
+.container-fluid {
     margin: 0;
-    margin-right: 0 !important;
-    padding: 0 0;
+    
 }
 
 .cardContainer {
     width: calc(360px * var(--cardScale));
-    height: calc(540px * var(--cardScale))
+    height: calc(540px * var(--cardScale));
+    overflow: hidden;
+}
+
+.cardContainer:last-child {
+    overflow: visible;
 }
 
 .card{
-    transform: scale(var(--cardScale)) translate(-50%, -50%);
+    transform-origin: top left;
+    transform: scale(var(--cardScale));
 }
 
 .card {
@@ -94,8 +106,8 @@ hr {
 
 .score {
     align-self: flex-start;
-    width: 3rem;
-    height: 3rem;
+    min-width: 3rem;
+    min-height: 3rem;
     border-radius: 15%;
     margin-right: 2rem;
     background-color: white;   
@@ -129,4 +141,28 @@ i {
 
 .hand {
     padding-top: 4rem;
+}
+
+.playerHand {
+    max-width: 30%;
+}
+
+#chat {
+    margin: 0;
+    padding: 0;
+    /* height: 100%; */
+    color: white;
+    font-size: 1.3em;
+    border-left: 1px solid white;
+}
+
+.chatItem {
+    display: inline-block;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+}
+
+#content {
+    height: calc(100% - var(--navbarHeight) - .1rem);
 }

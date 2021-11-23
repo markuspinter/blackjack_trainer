@@ -6,6 +6,7 @@ var playerHandCards = [];
 var playerCount = 0;
 
 const BLACKJACK_VALUE = 21;
+const HIT_ON_SOFT_17 = true;
 
 const cardsValues = {
     "AS" : 11, "2S": 2, "3S": 3, "4S": 4, "5S": 5, "6S": 6, "7S": 7, "8S": 8, "9S": 9, "10S": 10, "JS": 10, "QS": 10, "KS": 10,
@@ -14,18 +15,65 @@ const cardsValues = {
     "AC" : 11, "2C": 2, "3C": 3, "4C": 4, "5C": 5, "6C": 6, "7C": 7, "8C": 8, "9C": 9, "10C": 10, "JC": 10, "QC": 10, "KC": 10
 };
 
-bjDealCard(dealerHand, dealerHandCards, count=1, isFaceDown=false)
-// bjDealCard(dealerHand, dealerHandCards, count=1, isFaceDown=true)
-bjCheckPlayerScore(dealerHand, dealerHandCards)
+generateDecks();
+bjNewRound();
 
-bjDealCard(playerHand, playerHandCards, count=2, isFaceDown=false)
-bjCheckPlayerScore(playerHand, playerHandCards)
+function bjNewRound()
+{
+    try
+    {
+        dealerHand.find(".cardContainer").remove();
+        dealerHandCards = [];
+        playerHand.find(".cardContainer").remove();
+        playerHandCards = [];
+
+        bjDealCard(dealerHand, dealerHandCards, count=1, isFaceDown=false);
+        bjDealCard(dealerHand, dealerHandCards, count=1, isFaceDown=true);
+        let score = bjCheckDealerScore(dealerHand, dealerHandCards);
+
+        bjDealCard(playerHand, playerHandCards, count=2, isFaceDown=false);
+        let [playerScore, playerIsSoftScore] = bjCheckPlayerScore(playerHand, playerHandCards);
+
+        $("#newRound").attr("disabled", true);
+        $(".gameAction").removeAttr("disabled");
+
+        console.log(playerHandCards);
+        console.log(playerHandCards.every(val => cardsValues[val] === cardsValues[playerHandCards[0]]));
+        if (!playerHandCards.every(val => cardsValues[val] === cardsValues[playerHandCards[0]]))
+        {
+            $("#split").attr("disabled", true);
+        }
+
+        if (score == BLACKJACK_VALUE || playerScore == BLACKJACK_VALUE)
+        {
+            bjStand();
+        }
+    }
+    catch (e) 
+    {
+        console.error(e);
+        alertAndDispose("Shoe is empty, starting new round...");
+        generateDecks();
+        bjRoundFinished();
+        
+    }
+}
+
+function bjRoundFinished()
+{
+    $("#newRound").removeAttr("disabled");
+    $(".gameAction").attr("disabled", true);
+}
 
 function bjDealCard(hand, handCardsArray, count=1, isFaceDown=false)
 {
     for (let i=0; i < count; i++)
     {
         let nextCard = getNextCard();
+        if (nextCard === null)
+        {
+            throw "Shoe is empty!";
+        }
         let cardContainer = $(cardTemplate).clone();
         let card = cardContainer.find(".card")[0];
         setCardTexture(card, nextCard, isFaceDown);
@@ -44,12 +92,23 @@ function bjGetHandScore(cardsArray)
     return sum;
 }
 
+function bjCheckDealerScore(hand, handCardsArray)
+{
+    let score = bjGetHandScore(handCardsArray);
+
+    hand.find(".score").text(cardsValues[handCardsArray[0]]);
+
+
+    return score;
+}
+
 function bjCheckPlayerScore(hand, handCardsArray)
 {
     let other = handCardsArray.filter(card => !card.includes("A"));
     let score = bjGetHandScore(other);
 
     let prefix = "";
+    let isSoftScore = false;
  
     let aces = handCardsArray.filter(card => card.includes("A"));
     if (aces.length > 0)
@@ -71,19 +130,107 @@ function bjCheckPlayerScore(hand, handCardsArray)
         if (acesValues.includes(11))
         {
             prefix = "S";
+            isSoftScore = true;
         }
     }
     
-    hand.find(".score").text(prefix + score)
+    if (score == 21 && handCardsArray.length == 2)
+    {
+        //blackjack
+        hand.find(".score").text("J")
+    }
+    else
+    {
+        hand.find(".score").text(prefix + score)
+    }
+
+    return [score, isSoftScore];
 }
 
 function bjHit()
 {
-    bjDealCard(playerHand, playerHandCards);
-    bjCheckPlayerScore(playerHand, playerHandCards);
+    try {
+        bjDealCard(playerHand, playerHandCards);
+        let [playerScore, playerIsSoftScore] = bjCheckPlayerScore(playerHand, playerHandCards);
+
+        if (playerScore >= BLACKJACK_VALUE)
+        {
+            bjStand();
+        }
+    }
+    catch (e) {
+        console.error(e);
+        alertAndDispose("Shoe is empty, starting new round...");
+        generateDecks();
+        bjRoundFinished();
+        
+    }
 }
 
 function bjStand()
 {
-    bjDealCard(dealerHand, dealerHandCards);
+    try {
+        let facedDownCards = dealerHand.find("[faceddown='true']");
+        setCardTexture(facedDownCards, facedDownCards.attr("type")); //only works for one card
+        let [score, isSoftScore] = bjCheckPlayerScore(dealerHand, dealerHandCards);
+
+        if (HIT_ON_SOFT_17)
+        {
+            while (score <= 17)
+            {
+                bjDealCard(dealerHand, dealerHandCards);
+                [score, isSoftScore] = bjCheckPlayerScore(dealerHand, dealerHandCards);
+            }
+        }
+        else
+        {
+            //stand on soft 17
+            while (score <= 17)
+            {
+                if (score == 17 && isSoftScore)
+                {
+                    console.info("S17, standing...");
+                    break;
+                }
+                bjDealCard(dealerHand, dealerHandCards);
+                [score, isSoftScore] = bjCheckPlayerScore(dealerHand, dealerHandCards);
+            }
+        }
+
+        let [playerScore, playerIsSoftScore] = bjCheckPlayerScore(playerHand, playerHandCards);
+        if (score > BLACKJACK_VALUE && playerScore <= BLACKJACK_VALUE)
+        {
+            addChatMessage(playerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Dealer busts! Player wins!");
+        }
+        else if (playerScore > BLACKJACK_VALUE)
+        {
+            addChatMessage(playerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player loses!");
+        }
+        else if (score > playerScore)
+        {
+            addChatMessage(playerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player loses!");
+        }
+        else if (score == playerScore)
+        {
+            addChatMessage(playerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Push!");
+        }
+        else if (score < playerScore)
+        {
+            addChatMessage(playerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player wins!");
+        }
+        
+        bjRoundFinished();
+    }
+    catch (e) {
+        console.error(e);
+        alertAndDispose("Shoe is empty, starting new round...");
+        generateDecks();
+        bjRoundFinished();
+        
+    }
+}
+
+function bjDouble()
+{
+    alertAndDispose("test...");
 }

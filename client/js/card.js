@@ -18,8 +18,10 @@ const cardTemplate = '<div class="cardContainer"><div class="card"></div></div>'
 
 function setCardTexture(card, type, isFacedDown=false)
 {
+    $(card).attr("type", type);
     if (isFacedDown)
     {
+        $(card).attr("faceddown", true);
         $(card).css("background-image", "url(../img/back.png)");
         $(card).css("background-position", "0px 0px");
     }

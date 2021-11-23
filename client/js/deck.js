@@ -11,13 +11,19 @@ const fisherYatesShuffle = array => {
     }
 }
 
-
-for (let i=0; i<DECK_SIZE; i++)
+function generateDecks(decks=2)
 {
-    Array.prototype.push.apply(deck, Object.keys(cards));
+    deck = [];
+    playedCards = [];
+    for (let i=0; i<DECK_SIZE; i++)
+    {
+        Array.prototype.push.apply(deck, Object.keys(cards));
+    }
+    fisherYatesShuffle(deck);
+    console.log(deck);
 }
-fisherYatesShuffle(deck);
-console.log(deck);
+
+
 
 function getNextCard()
 {

@@ -7,6 +7,7 @@ $(window).on("load", function()
     // setInterval(() => {
     //     testCards();
     // }, 6000);
+    // alertAndDispose("test", 1000);
 });
 
 function testCards()
@@ -21,4 +22,16 @@ function testCards()
     });
     
     
+}
+
+function onShowHandTotal(cbox)
+{
+    if (!cbox.checked)
+    {
+        $(".score").attr("hidden", true);
+    }
+    else
+    {
+        $(".score").removeAttr("hidden");
+    }
 }
