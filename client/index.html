@@ -24,15 +24,26 @@
         
         <h1 id="title">BlackJack Trainer</h1>
         <div class="form-check" style="margin: auto;">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" onchange="onShowHandTotal(this);" style="margin-top: 0rem;">
-            <label class="form-check-label" for="flexCheckChecked">
+            <input class="form-check-input" type="checkbox" value="" id="showHandTotalCbox" onchange="onShowHandTotal(this);" style="margin-top: 0rem;">
+            <label class="form-check-label" for="showHandTotalCbox">
               Show hand total
             </label>
           </div>
+          <div class="form-check" style="margin: auto;">
+            <input class="form-check-input" type="checkbox" value="" id="doubleAfterSplitCbox" onchange="onDoubleAfterSplit(this);" style="margin-top: 0rem;" checked>
+            <label class="form-check-label" for="doubleAfterSplitCbox">
+              Double After Split Allowed
+            </label>
+          </div>
+          <select class="form-select" aria-label="Dealer Rules" onchange="onDealerRulesChange(value);">
+            <option selected value="true">Dealer hits on soft 17</option>
+            <option value="false">Dealer stands on soft 17</option>
+          </select>
+          <p style="margin: auto;">Late Surrender</p>
         <p id="versionLabel">v<span id="version">1.0.0</span></p>
     </div>
-    <hr/>
     <div id="content" class="container-fluid">
+        <hr/>
         <div class="row" style="height: 100%;">
             <div class="col">
                 <div id="board" class="container-fluid justify-content-center">
@@ -42,14 +53,7 @@
                         </div>
                     </div>
                 
-                    <div class="row justify-content-center">
-                          
-                        <div class="playerHand hand col">
-                            <span class="score" hidden>--</span>
-                        </div>
-                        <div class="playerHand hand col">
-                            <span class="score" hidden>--</span>
-                        </div>
+                    <div id="playerHands" class="row justify-content-center">
                     </div>
                     <div class="buttons row justify-content-center">
                         <button id="surrender" type="button" class="btn btn-light gameAction" onclick="bjSurrender(this)" data-toggle="tooltip" data-placement="bottom" title="Surrender (A)" disabled><i class="bi bi-flag"></i></button>

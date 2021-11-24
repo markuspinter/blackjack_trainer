@@ -1,5 +1,6 @@
 :root {
     --cardScale: 0.4;
+    --cardBorderRadius: 30px;
     --navbarHeight: 5rem;
 }
 
@@ -8,6 +9,7 @@ body, html {
     width: 100%;
     background-color: darkseagreen;
     /* overflow: hidden; */
+    overflow: auto;
 }
 
 body {
@@ -27,6 +29,10 @@ body {
     font-weight: lighter;
 	height: var(--navbarHeight);
     background-color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
 }
 
 hr {
@@ -101,7 +107,7 @@ hr {
     height: 540px;
     width: 360px;
 
-    border-radius: 30px;
+    border-radius: var(--cardBorderRadius);
 }
 
 .score {
@@ -140,11 +146,15 @@ i {
 }
 
 .hand {
-    padding-top: 4rem;
+    margin-top: 4rem;
+    padding: 1rem;
 }
 
 .playerHand {
     max-width: 30%;
+    min-width: 20rem;
+    border: 2px none white;
+    border-radius: calc(var(--cardBorderRadius)/2);
 }
 
 #chat {
@@ -154,6 +164,8 @@ i {
     color: white;
     font-size: 1.3em;
     border-left: 1px solid white;
+    overflow:auto;
+    height: 100%;
 }
 
 .chatItem {
@@ -165,4 +177,5 @@ i {
 
 #content {
     height: calc(100% - var(--navbarHeight) - .1rem);
+    margin-top: var(--navbarHeight);
 }

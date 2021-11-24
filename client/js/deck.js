@@ -20,6 +20,13 @@ function generateDecks(decks=2)
         Array.prototype.push.apply(deck, Object.keys(cards));
     }
     fisherYatesShuffle(deck);
+    deck[1] = "4S";
+    deck[2] = "4C";
+    deck[0] = "AC";
+    deck[4] = "4S";
+    deck[6] = "4S";
+
+    deck[3] = "6C";
     console.log(deck);
 }
 

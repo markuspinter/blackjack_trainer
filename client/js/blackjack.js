@@ -1,12 +1,19 @@
 var dealerHand = $(".dealerHand");
 var dealerHandCards = [];
-var playerHand = $(".playerHand");
+var playerHand = null;
 var playerHandCards = [];
+var playerHandsCards = [playerHandCards];
+var surrenderedPlayers = [];
+
+const playerHandTemplate = '<div class="playerHand hand col" playerID="0"><span class="score" hidden>--</span></div>'
 
 var playerCount = 0;
+var currPlayerID = 0;
 
 const BLACKJACK_VALUE = 21;
-const HIT_ON_SOFT_17 = true;
+
+var HIT_ON_SOFT_17 = true;
+var DOUBLE_AFTER_SPLIT = true;
 
 const cardsValues = {
     "AS" : 11, "2S": 2, "3S": 3, "4S": 4, "5S": 5, "6S": 6, "7S": 7, "8S": 8, "9S": 9, "10S": 10, "JS": 10, "QS": 10, "KS": 10,
@@ -18,36 +25,109 @@ const cardsValues = {
 generateDecks();
 bjNewRound();
 
+function bjDisableSurrender()
+{
+    $("#surrender").attr("disabled", true);
+}
+
+function bjCreatePlayer(surrenderAllowed=true)
+{
+    playerCount++;
+    let newPlayer = $(playerHandTemplate).clone()
+    
+    newPlayer.attr("playerID", playerCount-1);
+    newPlayer.attr("surrenderAllowed", surrenderAllowed);
+    if ($("#showHandTotalCbox")[0].checked)
+    {
+        newPlayer.find(".score").removeAttr("hidden");
+    }
+    if (playerCount > 1)
+    {
+        playerHand.css("border-style", "solid");
+    }
+
+    playerHandsCards.push([]);
+    $("#playerHands").prepend(newPlayer);
+
+    if (playerCount > 2)
+    {
+        $("#playerHands .playerHand").css("max-width", "30%");
+    }
+    else if (playerCount > 1)
+    {
+        $("#playerHands .playerHand").css("max-width", "50%");
+    }
+    else
+    {
+        $("#playerHands .playerHand").css("max-width", "70%");
+    }
+
+    return [newPlayer, playerCount-1];
+}
+
+function bjSwitchPlayer(playerID)
+{
+    currPlayerID = playerID;
+    if (playerHand != null)
+    {
+        playerHand.css("border-style", "none");
+    }
+    
+    playerHand = $("[playerID="+currPlayerID+"]"); 
+    if (playerCount > 1)
+    {
+        playerHand.css("border-style", "solid");
+    }
+    
+    playerHandCards = playerHandsCards[currPlayerID];
+    
+    
+    let score = bjCheckDealerScore(dealerHand, dealerHandCards);
+    let [playerScore, playerIsSoftScore] = bjCheckPlayerScore(playerHand, playerHandCards);
+
+    $("#newRound").attr("disabled", true);
+    $(".gameAction").removeAttr("disabled");
+
+    if (playerHand.attr("surrenderAllowed") == "false")
+    {
+        $("#surrender").attr("disabled", true);
+    }
+
+    //check if split is allowed
+    if (!playerHandCards.every(val => cardsValues[val] === cardsValues[playerHandCards[0]]))
+    {
+        $("#split").attr("disabled", true);
+    }
+
+    if (score == BLACKJACK_VALUE || playerScore == BLACKJACK_VALUE)
+    {
+        bjStand();
+    }
+}
+
 function bjNewRound()
 {
     try
     {
+        playerCount = 0;
+        playerHandsCards = [[]];
+        playerHandCards = playerHandsCards[currPlayerID];
+        $("#playerHands").empty();
+        [playerHand, currPlayerID] = bjCreatePlayer();
+
         dealerHand.find(".cardContainer").remove();
         dealerHandCards = [];
-        playerHand.find(".cardContainer").remove();
-        playerHandCards = [];
+
+        bjSwitchPlayer(0);
 
         bjDealCard(dealerHand, dealerHandCards, count=1, isFaceDown=false);
-        bjDealCard(dealerHand, dealerHandCards, count=1, isFaceDown=true);
-        let score = bjCheckDealerScore(dealerHand, dealerHandCards);
-
+        
         bjDealCard(playerHand, playerHandCards, count=2, isFaceDown=false);
-        let [playerScore, playerIsSoftScore] = bjCheckPlayerScore(playerHand, playerHandCards);
 
-        $("#newRound").attr("disabled", true);
-        $(".gameAction").removeAttr("disabled");
+        bjDealCard(dealerHand, dealerHandCards, count=1, isFaceDown=true);
 
-        console.log(playerHandCards);
-        console.log(playerHandCards.every(val => cardsValues[val] === cardsValues[playerHandCards[0]]));
-        if (!playerHandCards.every(val => cardsValues[val] === cardsValues[playerHandCards[0]]))
-        {
-            $("#split").attr("disabled", true);
-        }
+        bjSwitchPlayer(0);
 
-        if (score == BLACKJACK_VALUE || playerScore == BLACKJACK_VALUE)
-        {
-            bjStand();
-        }
     }
     catch (e) 
     {
@@ -150,6 +230,11 @@ function bjCheckPlayerScore(hand, handCardsArray)
 function bjHit()
 {
     try {
+        bjDisableSurrender();
+        //split and double down not allowed anymore
+        $("#split").attr("disabled", true);
+        $("#double").attr("disabled", true);
+
         bjDealCard(playerHand, playerHandCards);
         let [playerScore, playerIsSoftScore] = bjCheckPlayerScore(playerHand, playerHandCards);
 
@@ -167,59 +252,101 @@ function bjHit()
     }
 }
 
-function bjStand()
+function bjPlayDealerAndEvaluate()
 {
-    try {
-        let facedDownCards = dealerHand.find("[faceddown='true']");
-        setCardTexture(facedDownCards, facedDownCards.attr("type")); //only works for one card
-        let [score, isSoftScore] = bjCheckPlayerScore(dealerHand, dealerHandCards);
+    let facedDownCards = dealerHand.find("[faceddown='true']");
+    setCardTexture(facedDownCards, facedDownCards.attr("type")); //only works for one card
 
-        if (HIT_ON_SOFT_17)
+    let [score, isSoftScore] = bjCheckPlayerScore(dealerHand, dealerHandCards);
+
+    while (score <= 17)
+    {
+        if (score == 17) 
         {
-            while (score <= 17)
+            if (isSoftScore)
             {
-                bjDealCard(dealerHand, dealerHandCards);
-                [score, isSoftScore] = bjCheckPlayerScore(dealerHand, dealerHandCards);
-            }
-        }
-        else
-        {
-            //stand on soft 17
-            while (score <= 17)
-            {
-                if (score == 17 && isSoftScore)
+                if(HIT_ON_SOFT_17)
+                {
+                    console.info("S17, hit...");
+                }
+                else
                 {
                     console.info("S17, standing...");
                     break;
                 }
-                bjDealCard(dealerHand, dealerHandCards);
-                [score, isSoftScore] = bjCheckPlayerScore(dealerHand, dealerHandCards);
+            }
+            else
+            {
+                break;
             }
         }
+        bjDealCard(dealerHand, dealerHandCards);
+        [score, isSoftScore] = bjCheckPlayerScore(dealerHand, dealerHandCards);
+    }
 
-        let [playerScore, playerIsSoftScore] = bjCheckPlayerScore(playerHand, playerHandCards);
+    for (let id=0; id < playerCount; id++)
+    {
+
+        let currPlayerHand = $("[playerID="+id+"]");         
+        let currPlayerHandCards = playerHandsCards[id];
+
+        let [playerScore, playerIsSoftScore] = bjCheckPlayerScore(currPlayerHand, currPlayerHandCards);
+        if (surrenderedPlayers.includes(id))
+        {
+            addChatMessage(currPlayerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player "+(id+1)+" surrendered!");
+            continue;
+        }
+
         if (score > BLACKJACK_VALUE && playerScore <= BLACKJACK_VALUE)
         {
-            addChatMessage(playerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Dealer busts! Player wins!");
+            addChatMessage(currPlayerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Dealer busts! Player "+(id+1)+" wins!");
         }
         else if (playerScore > BLACKJACK_VALUE)
         {
-            addChatMessage(playerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player loses!");
+            addChatMessage(currPlayerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player "+(id+1)+" busts!");
         }
         else if (score > playerScore)
         {
-            addChatMessage(playerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player loses!");
+            addChatMessage(currPlayerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player "+(id+1)+" loses!");
         }
         else if (score == playerScore)
         {
-            addChatMessage(playerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Push!");
+            addChatMessage(currPlayerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player "+(id+1)+" Push!");
         }
         else if (score < playerScore)
         {
-            addChatMessage(playerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player wins!");
+            addChatMessage(currPlayerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player "+(id+1)+" wins!");
         }
-        
-        bjRoundFinished();
+    }
+}
+
+function bjStand()
+{
+    try {
+        bjDisableSurrender();
+        if (currPlayerID >= playerCount-1)
+        {
+            bjPlayDealerAndEvaluate();
+            //round finished
+            bjRoundFinished();
+        }
+        else
+        {
+            //next player
+            currPlayerID += 1;
+            bjSwitchPlayer(currPlayerID);
+            //deal card after split
+            if (playerHandCards.length < 2)
+            {
+                bjDealCard(playerHand, playerHandCards);
+                bjCheckPlayerScore(playerHand, playerHandCards);
+            }
+            //check if split is allowed
+            if (!playerHandCards.every(val => cardsValues[val] === cardsValues[playerHandCards[0]]))
+            {
+                $("#split").attr("disabled", true);
+            }
+        }
     }
     catch (e) {
         console.error(e);
@@ -232,5 +359,44 @@ function bjStand()
 
 function bjDouble()
 {
-    alertAndDispose("test...");
+    bjDisableSurrender();
+    bjDealCard(playerHand, playerHandCards);
+    bjStand();
+}
+
+function bjSplit()
+{
+    bjDisableSurrender();
+    if (DOUBLE_AFTER_SPLIT)
+    {
+        //double after split allowed
+        $("#double").removeAttr("disabled");
+    }
+    else
+    {
+        //double down after split not allowed
+        $("#double").attr("disabled", true);
+    }
+
+    let [newPlayer, newPlayerID] = bjCreatePlayer(false);
+    let lastCard = playerHandCards.pop();
+    let lastCardDOM = playerHand.children().last().detach();
+    newPlayer.append(lastCardDOM);
+    playerHandsCards[newPlayerID].push(lastCard);
+
+    bjDealCard(playerHand, playerHandCards);
+    bjCheckPlayerScore(playerHand, playerHandCards);
+    bjCheckPlayerScore(newPlayer, playerHandsCards[newPlayerID]);
+
+    //check if split is allowed
+    if (!playerHandCards.every(val => cardsValues[val] === cardsValues[playerHandCards[0]]))
+    {
+        $("#split").attr("disabled", true);
+    }
+}
+
+function bjSurrender()
+{
+    surrenderedPlayers.push(currPlayerID);
+    bjStand();
 }

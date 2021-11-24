@@ -35,3 +35,22 @@ function onShowHandTotal(cbox)
         $(".score").removeAttr("hidden");
     }
 }
+
+function onDoubleAfterSplit(cbox)
+{
+    if (cbox.checked)
+    {
+        DOUBLE_AFTER_SPLIT = true
+    }
+    else
+    {
+        DOUBLE_AFTER_SPLIT = false
+    }
+}
+
+function onDealerRulesChange(val)
+{
+    let newVal = (val.toLowerCase() === 'true');
+    console.log(newVal);
+    HIT_ON_SOFT_17 = newVal;
+}

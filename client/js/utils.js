@@ -12,7 +12,7 @@ function alertAndDispose(msg, disposeAfter=3000)
 
 function addChatMessage(msg)
 {
-    $("#chat").append('<span class="chatItem">' + msg + '</span><hr/>');
+    $("#chat").prepend('<span class="chatItem">' + msg + '</span><hr/>');
 }
 
 //abort if any key is pressed
