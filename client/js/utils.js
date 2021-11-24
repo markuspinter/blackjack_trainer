@@ -10,9 +10,9 @@ function alertAndDispose(msg, disposeAfter=3000)
     }, disposeAfter);
 }
 
-function addChatMessage(msg)
+function addChatMessage(msg, color="white")
 {
-    $("#chat").prepend('<span class="chatItem">' + msg + '</span><hr/>');
+    $("#chat").prepend('<span class="chatItem" style="color: '+color+';">' + msg + '</span><hr/>');
 }
 
 //abort if any key is pressed

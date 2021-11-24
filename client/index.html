@@ -30,16 +30,25 @@
             </label>
           </div>
           <div class="form-check" style="margin: auto;">
-            <input class="form-check-input" type="checkbox" value="" id="doubleAfterSplitCbox" onchange="onDoubleAfterSplit(this);" style="margin-top: 0rem;" checked>
+            <input class="form-check-input" type="checkbox" value="" id="doubleAfterSplitCbox" onchange="onDoubleAfterSplit(this);updateStrategy();" style="margin-top: 0rem;" checked>
             <label class="form-check-label" for="doubleAfterSplitCbox">
               Double After Split Allowed
             </label>
           </div>
-          <select class="form-select" aria-label="Dealer Rules" onchange="onDealerRulesChange(value);">
+          <select class="form-select" aria-label="Dealer Rules" onchange="onDealerRulesChange(value);updateStrategy();">
             <option selected value="true">Dealer hits on soft 17</option>
             <option value="false">Dealer stands on soft 17</option>
           </select>
-          <p style="margin: auto;">Late Surrender</p>
+          <select class="form-select" aria-label="Decks" onchange="onDecksChange(value);updateStrategy();">
+            <option selected value="1">1 Deck</option>
+            <option value="2">2 Decks</option>
+            <option value="4">4 Decks</option>
+            <option value="6">6 Decks</option>
+            <option value="8">8 Decks</option>
+          </select>
+          <select class="form-select" aria-label="Surrender Rules" onchange="onSurrenderRulesChange(value);updateStrategy();">
+            <option selected value="1">Late Surrender</option>
+          </select>
         <p id="versionLabel">v<span id="version">1.0.0</span></p>
     </div>
     <div id="content" class="container-fluid">
@@ -90,6 +99,7 @@
     <script src="js/utils.js"></script>
     <script src="js/card.js"></script>
     <script src="js/deck.js"></script>
+    <script src="js/strategies.js"></script>
     <script src="js/blackjack.js"></script>
     <script src="js/main.js"></script>
 

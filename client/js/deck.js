@@ -1,4 +1,4 @@
-const DECK_SIZE = 1;
+var DECK_SIZE = 1;
 var deck = [];
 var playedCards = [];
 
@@ -11,7 +11,7 @@ const fisherYatesShuffle = array => {
     }
 }
 
-function generateDecks(decks=2)
+function generateDecks()
 {
     deck = [];
     playedCards = [];
@@ -20,8 +20,8 @@ function generateDecks(decks=2)
         Array.prototype.push.apply(deck, Object.keys(cards));
     }
     fisherYatesShuffle(deck);
-    deck[1] = "4S";
-    deck[2] = "4C";
+    deck[1] = "KS";
+    deck[2] = "TC";
     deck[0] = "AC";
     deck[4] = "4S";
     deck[6] = "4S";

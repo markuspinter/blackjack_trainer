@@ -54,3 +54,10 @@ function onDealerRulesChange(val)
     console.log(newVal);
     HIT_ON_SOFT_17 = newVal;
 }
+
+function onDecksChange(val)
+{
+    DECK_SIZE = parseInt(val);
+    generateDecks();
+    bjNewRound();
+}

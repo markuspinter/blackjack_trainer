@@ -15,15 +15,22 @@ const BLACKJACK_VALUE = 21;
 var HIT_ON_SOFT_17 = true;
 var DOUBLE_AFTER_SPLIT = true;
 
+var BLACKJACK_STRATEGY = FOUR_OR_MORE_H17_DAS;
+
 const cardsValues = {
-    "AS" : 11, "2S": 2, "3S": 3, "4S": 4, "5S": 5, "6S": 6, "7S": 7, "8S": 8, "9S": 9, "10S": 10, "JS": 10, "QS": 10, "KS": 10,
-    "AH" : 11, "2H": 2, "3H": 3, "4H": 4, "5H": 5, "6H": 6, "7H": 7, "8H": 8, "9H": 9, "10H": 10, "JH": 10, "QH": 10, "KH": 10,
-    "AD" : 11, "2D": 2, "3D": 3, "4D": 4, "5D": 5, "6D": 6, "7D": 7, "8D": 8, "9D": 9, "10D": 10, "JD": 10, "QD": 10, "KD": 10,
-    "AC" : 11, "2C": 2, "3C": 3, "4C": 4, "5C": 5, "6C": 6, "7C": 7, "8C": 8, "9C": 9, "10C": 10, "JC": 10, "QC": 10, "KC": 10
+    "AS" : 11, "2S": 2, "3S": 3, "4S": 4, "5S": 5, "6S": 6, "7S": 7, "8S": 8, "9S": 9, "TS": 10, "JS": 10, "QS": 10, "KS": 10,
+    "AH" : 11, "2H": 2, "3H": 3, "4H": 4, "5H": 5, "6H": 6, "7H": 7, "8H": 8, "9H": 9, "TH": 10, "JH": 10, "QH": 10, "KH": 10,
+    "AD" : 11, "2D": 2, "3D": 3, "4D": 4, "5D": 5, "6D": 6, "7D": 7, "8D": 8, "9D": 9, "TD": 10, "JD": 10, "QD": 10, "KD": 10,
+    "AC" : 11, "2C": 2, "3C": 3, "4C": 4, "5C": 5, "6C": 6, "7C": 7, "8C": 8, "9C": 9, "TC": 10, "JC": 10, "QC": 10, "KC": 10
 };
 
 generateDecks();
 bjNewRound();
+
+function bjIsPair(handCards)
+{
+    return handCards.every(card => card.charAt(0) === handCards[0].charAt(0))
+}
 
 function bjDisableSurrender()
 {
@@ -94,14 +101,14 @@ function bjSwitchPlayer(playerID)
     }
 
     //check if split is allowed
-    if (!playerHandCards.every(val => cardsValues[val] === cardsValues[playerHandCards[0]]))
+    if (!bjIsPair(playerHandCards))
     {
         $("#split").attr("disabled", true);
     }
 
     if (score == BLACKJACK_VALUE || playerScore == BLACKJACK_VALUE)
     {
-        bjStand();
+        bjPlayerFinished();
     }
 }
 
@@ -135,7 +142,7 @@ function bjNewRound()
         alertAndDispose("Shoe is empty, starting new round...");
         generateDecks();
         bjRoundFinished();
-        
+        bjNewRound();
     }
 }
 
@@ -177,6 +184,8 @@ function bjCheckDealerScore(hand, handCardsArray)
     let score = bjGetHandScore(handCardsArray);
 
     hand.find(".score").text(cardsValues[handCardsArray[0]]);
+    hand.find(".score").attr("score", cardsValues[handCardsArray[0]])
+    hand.find(".score").attr("isSoftHand", false);
 
 
     return score;
@@ -223,6 +232,8 @@ function bjCheckPlayerScore(hand, handCardsArray)
     {
         hand.find(".score").text(prefix + score)
     }
+    hand.find(".score").attr("score", score);
+    hand.find(".score").attr("isSoftHand", isSoftScore);
 
     return [score, isSoftScore];
 }
@@ -230,6 +241,7 @@ function bjCheckPlayerScore(hand, handCardsArray)
 function bjHit()
 {
     try {
+        checkStrategy(ACTION.HIT, dealerHand, playerHand, playerHandCards);
         bjDisableSurrender();
         //split and double down not allowed anymore
         $("#split").attr("disabled", true);
@@ -240,7 +252,7 @@ function bjHit()
 
         if (playerScore >= BLACKJACK_VALUE)
         {
-            bjStand();
+            bjPlayerFinished()
         }
     }
     catch (e) {
@@ -248,7 +260,7 @@ function bjHit()
         alertAndDispose("Shoe is empty, starting new round...");
         generateDecks();
         bjRoundFinished();
-        
+        bjNewRound();
     }
 }
 
@@ -320,52 +332,60 @@ function bjPlayDealerAndEvaluate()
     }
 }
 
+function bjPlayerFinished()
+{
+    if (currPlayerID >= playerCount-1)
+    {
+        bjPlayDealerAndEvaluate();
+        //round finished
+        bjRoundFinished();
+    }
+    else
+    {
+        //next player
+        currPlayerID += 1;
+        bjSwitchPlayer(currPlayerID);
+        //deal card after split
+        if (playerHandCards.length < 2)
+        {
+            bjDealCard(playerHand, playerHandCards);
+            bjCheckPlayerScore(playerHand, playerHandCards);
+        }
+        //check if split is allowed
+        if (!bjIsPair(playerHandCards))
+        {
+            $("#split").attr("disabled", true);
+        }
+    }
+}
+
 function bjStand()
 {
     try {
+        checkStrategy(ACTION.STAND, dealerHand, playerHand, playerHandCards);
         bjDisableSurrender();
-        if (currPlayerID >= playerCount-1)
-        {
-            bjPlayDealerAndEvaluate();
-            //round finished
-            bjRoundFinished();
-        }
-        else
-        {
-            //next player
-            currPlayerID += 1;
-            bjSwitchPlayer(currPlayerID);
-            //deal card after split
-            if (playerHandCards.length < 2)
-            {
-                bjDealCard(playerHand, playerHandCards);
-                bjCheckPlayerScore(playerHand, playerHandCards);
-            }
-            //check if split is allowed
-            if (!playerHandCards.every(val => cardsValues[val] === cardsValues[playerHandCards[0]]))
-            {
-                $("#split").attr("disabled", true);
-            }
-        }
+        bjPlayerFinished();
     }
     catch (e) {
         console.error(e);
         alertAndDispose("Shoe is empty, starting new round...");
         generateDecks();
         bjRoundFinished();
-        
+        bjNewRound();
     }
 }
 
 function bjDouble()
 {
+    checkStrategy(ACTION.DOUBLE, dealerHand, playerHand, playerHandCards);
     bjDisableSurrender();
     bjDealCard(playerHand, playerHandCards);
-    bjStand();
+    bjPlayerFinished();
 }
 
 function bjSplit()
 {
+    checkStrategy(ACTION.SPLIT, dealerHand, playerHand, playerHandCards);
     bjDisableSurrender();
     if (DOUBLE_AFTER_SPLIT)
     {
@@ -389,7 +409,7 @@ function bjSplit()
     bjCheckPlayerScore(newPlayer, playerHandsCards[newPlayerID]);
 
     //check if split is allowed
-    if (!playerHandCards.every(val => cardsValues[val] === cardsValues[playerHandCards[0]]))
+    if (!bjIsPair(playerHandCards))
     {
         $("#split").attr("disabled", true);
     }
@@ -397,6 +417,7 @@ function bjSplit()
 
 function bjSurrender()
 {
+    checkStrategy(ACTION.SURRENDER, dealerHand, playerHand, playerHandCards);
     surrenderedPlayers.push(currPlayerID);
-    bjStand();
+    bjPlayerFinished();
 }

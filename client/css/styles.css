@@ -35,6 +35,18 @@ body {
     z-index: 999;
 }
 
+#alert {
+    position: fixed;
+    top: var(--navbarHeight);
+    left: 0;
+    z-index: 999;
+}
+
+#titleBar > *
+{
+    font-size: 1rem;
+}
+
 hr {
     margin: 0rem;
     background-color: white;
@@ -170,9 +182,7 @@ i {
 
 .chatItem {
     display: inline-block;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    margin-left: 1rem;
+    margin: 1rem;
 }
 
 #content {
