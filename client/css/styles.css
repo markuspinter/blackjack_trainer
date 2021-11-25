@@ -2,12 +2,14 @@
     --cardScale: 0.4;
     --cardBorderRadius: 30px;
     --navbarHeight: 5rem;
+    --primaryColor: darkseagreen;
+    --primaryAccentColor: rgb(108, 146, 108);
 }
 
 body, html {
     height: 100%;
     width: 100%;
-    background-color: darkseagreen;
+    background-color: var(--primaryColor);
     /* overflow: hidden; */
     overflow: auto;
 }
@@ -45,6 +47,7 @@ body {
 #titleBar > *
 {
     font-size: 1rem;
+    margin: auto;
 }
 
 hr {
@@ -73,18 +76,18 @@ hr {
 }
 
 #board {
-    background-color: darkseagreen;
+    background-color: var(--primaryColor);
     height: 100%;
     width: auto;
 }
 
-.btn {
+.gameButton {
     height: 5rem;
     width: 5rem;
     /* border-radius: 50%; */
 }
 
-.hand, .buttons {
+.hand, .gameButton {
     display: flex;
     transform-origin: center;
     justify-content: center;
@@ -152,7 +155,7 @@ i {
     vertical-align: middle;
 }
 
-.buttons button {
+.buttons .gameButton {
     margin-right: 1rem;
     margin-top: 4rem;
 }
@@ -188,4 +191,15 @@ i {
 #content {
     height: calc(100% - var(--navbarHeight) - .1rem);
     margin-top: var(--navbarHeight);
+}
+
+.btn-secondary {
+    background-color: var(--primaryColor);
+    color: white;
+    border-color: white;
+}
+
+.btn-secondary:hover {
+    background-color: var(--primaryAccentColor);
+    border-color: white;
 }

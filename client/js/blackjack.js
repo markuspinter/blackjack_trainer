@@ -15,8 +15,6 @@ const BLACKJACK_VALUE = 21;
 var HIT_ON_SOFT_17 = true;
 var DOUBLE_AFTER_SPLIT = true;
 
-var BLACKJACK_STRATEGY = FOUR_OR_MORE_H17_DAS;
-
 const cardsValues = {
     "AS" : 11, "2S": 2, "3S": 3, "4S": 4, "5S": 5, "6S": 6, "7S": 7, "8S": 8, "9S": 9, "TS": 10, "JS": 10, "QS": 10, "KS": 10,
     "AH" : 11, "2H": 2, "3H": 3, "4H": 4, "5H": 5, "6H": 6, "7H": 7, "8H": 8, "9H": 9, "TH": 10, "JH": 10, "QH": 10, "KH": 10,

@@ -23,13 +23,13 @@
     <div id="titleBar" style="margin-bottom: -2rem;">
         
         <h1 id="title">BlackJack Trainer</h1>
-        <div class="form-check" style="margin: auto;">
+        <div class="form-check">
             <input class="form-check-input" type="checkbox" value="" id="showHandTotalCbox" onchange="onShowHandTotal(this);" style="margin-top: 0rem;">
             <label class="form-check-label" for="showHandTotalCbox">
               Show hand total
             </label>
           </div>
-          <div class="form-check" style="margin: auto;">
+          <div class="form-check">
             <input class="form-check-input" type="checkbox" value="" id="doubleAfterSplitCbox" onchange="onDoubleAfterSplit(this);updateStrategy();" style="margin-top: 0rem;" checked>
             <label class="form-check-label" for="doubleAfterSplitCbox">
               Double After Split Allowed
@@ -40,15 +40,16 @@
             <option value="false">Dealer stands on soft 17</option>
           </select>
           <select class="form-select" aria-label="Decks" onchange="onDecksChange(value);updateStrategy();">
-            <option selected value="1">1 Deck</option>
+            <option value="1">1 Deck</option>
             <option value="2">2 Decks</option>
-            <option value="4">4 Decks</option>
+            <option selected value="4">4 Decks</option>
             <option value="6">6 Decks</option>
             <option value="8">8 Decks</option>
           </select>
           <select class="form-select" aria-label="Surrender Rules" onchange="onSurrenderRulesChange(value);updateStrategy();">
             <option selected value="1">Late Surrender</option>
           </select>
+          <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#chartModal">Strategy Chart</button>
         <p id="versionLabel">v<span id="version">1.0.0</span></p>
     </div>
     <div id="content" class="container-fluid">
@@ -65,13 +66,13 @@
                     <div id="playerHands" class="row justify-content-center">
                     </div>
                     <div class="buttons row justify-content-center">
-                        <button id="surrender" type="button" class="btn btn-light gameAction" onclick="bjSurrender(this)" data-toggle="tooltip" data-placement="bottom" title="Surrender (A)" disabled><i class="bi bi-flag"></i></button>
-                        <button id="split" type="button" class="btn btn-light gameAction" onclick="bjSplit(this)" data-toggle="tooltip" data-placement="bottom" title="Split (S)" disabled style="transform: rotate(-90deg);"><i class="bi bi-arrows-expand"></i></button>
-                        <button id="double" type="button" class="btn btn-light gameAction" onclick="bjDouble(this)" data-toggle="tooltip" data-placement="bottom" title="Double (D)" disabled><i>x2</i></button>
-                        <button id="stand" type="button" class="btn btn-light gameAction" onclick="bjStand(this)" data-toggle="tooltip" data-placement="bottom" title="Stand (F)" disabled><i class="bi bi-x-circle"></i></button>
-                        <button id="hit" type="button" class="btn btn-light gameAction" onclick="bjHit(this)" data-toggle="tooltip" data-placement="bottom" title="Hit (G)" disabled><i class="bi bi-hand-index" style="margin-left: -0.6rem;"></i></button>
+                        <button id="surrender" type="button" class="btn btn-light gameAction gameButton" onclick="bjSurrender(this)" data-toggle="tooltip" data-placement="bottom" title="Surrender (A)" disabled><i class="bi bi-flag"></i></button>
+                        <button id="split" type="button" class="btn btn-light gameAction gameButton" onclick="bjSplit(this)" data-toggle="tooltip" data-placement="bottom" title="Split (S)" disabled style="transform: rotate(-90deg);"><i class="bi bi-arrows-expand"></i></button>
+                        <button id="double" type="button" class="btn btn-light gameAction gameButton" onclick="bjDouble(this)" data-toggle="tooltip" data-placement="bottom" title="Double (D)" disabled><i>x2</i></button>
+                        <button id="stand" type="button" class="btn btn-light gameAction gameButton" onclick="bjStand(this)" data-toggle="tooltip" data-placement="bottom" title="Stand (F)" disabled><i class="bi bi-x-circle"></i></button>
+                        <button id="hit" type="button" class="btn btn-light gameAction gameButton" onclick="bjHit(this)" data-toggle="tooltip" data-placement="bottom" title="Hit (G)" disabled><i class="bi bi-hand-index" style="margin-left: -0.6rem;"></i></button>
             
-                        <button id="newRound" type="button" class="btn btn-light" onclick="bjNewRound(this)" data-toggle="tooltip" data-placement="bottom" title="New Round (R)" disabled><i class="bi bi-check2"></i></button>
+                        <button id="newRound" type="button" class="btn btn-light gameButton" onclick="bjNewRound(this)" data-toggle="tooltip" data-placement="bottom" title="New Round (R)" disabled><i class="bi bi-check2"></i></button>
             
                         
                     </div>
@@ -82,7 +83,22 @@
             <div id="chat" class="col-2">
             </div>
         </div>
-        
+        <div class="modal fade" id="chartModal" tabindex="-1" role="dialog" aria-labelledby="chartModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="chartModalLabel">---</h5>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+                <div class="modal-body">
+                    <img id="chartImg" src="img/4ormore_h17_das.png" alt="strategy chart">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
     </div>
     
 

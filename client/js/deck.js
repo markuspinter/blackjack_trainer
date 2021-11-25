@@ -1,4 +1,4 @@
-var DECK_SIZE = 1;
+var DECK_SIZE = 4;
 var deck = [];
 var playedCards = [];
 
