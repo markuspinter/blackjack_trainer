@@ -8,7 +8,17 @@ $(window).on("load", function()
     //     testCards();
     // }, 6000);
     // alertAndDispose("test", 1000);
+    console.log(isMobile());
+    
 });
+
+if (isMobile())
+{
+    $("#chat").addClass("sidebar");
+    $(".chatButton").removeAttr("hidden");
+    $("#chat").children().removeAttr("hidden");
+    $("#chat").removeClass("col-2");
+}
 
 function testCards()
 {

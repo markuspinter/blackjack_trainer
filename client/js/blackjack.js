@@ -116,6 +116,7 @@ function bjNewRound()
     {
         playerCount = 0;
         playerHandsCards = [[]];
+        surrenderedPlayers = [];
         playerHandCards = playerHandsCards[currPlayerID];
         $("#playerHands").empty();
         [playerHand, currPlayerID] = bjCreatePlayer();

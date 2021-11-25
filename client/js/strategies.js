@@ -880,6 +880,8 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
             alertAndDispose("action not supported!");
             isCorrect = null;
     }
+
+    
     if (isCorrect !== null)
     {
         if (isCorrect)
@@ -888,6 +890,11 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
         }
         else
         {
+            //TODO: Make this prettier
+            if (isMobile())
+            {
+                alertAndDispose($(".log span").first().text())
+            }
             statsAddDecision(DECISION.WRONG);
         }
     }

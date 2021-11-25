@@ -4,21 +4,43 @@
     --navbarHeight: 5rem;
     --primaryColor: darkseagreen;
     --primaryAccentColor: rgb(108, 146, 108);
+    --buttonsHeight: 10rem; 
+    --cardWidth: 360px;
+    --cardHeight: 540px;
+    --textSize: 1.3rem;
+    --scoreSize: 1.5rem;
+}
+
+@media (orientation: portrait) {
+
+    :root {
+        --cardScale: .7;
+        --cardBorderRadius: 30px;
+        --navbarHeight: 5rem;
+        --primaryColor: darkseagreen;
+        --primaryAccentColor: rgb(108, 146, 108);
+        --buttonsHeight: 20%; 
+        --fontSize: 1.8rem !important;
+    }
 }
 
 body, html {
-    height: 100%;
+    /* min-height:100vh; */
+    height: calc(100%);
     width: 100%;
     background-color: var(--primaryColor);
     /* overflow: hidden; */
     overflow: auto;
+    /* touch-action: manipulation; */
 }
 
 body {
     font: 13px Helvetica, SansSerif;
-    background-color: var(--background-primary);
-    color: var(--content-primary);
     margin-top: 0px;
+}
+
+#board .row {
+    margin: 0 !important;
 }
 
 #titleBar {
@@ -37,7 +59,7 @@ body {
     z-index: 999;
 }
 
-#alert {
+.gameAlert {
     position: fixed;
     top: calc(var(--navbarHeight) + 1rem);
     left: calc(50% - (40% / 2));
@@ -79,6 +101,7 @@ hr {
     background-color: var(--primaryColor);
     height: 100%;
     width: auto;
+    padding: 0;
 }
 
 .gameButton {
@@ -101,8 +124,8 @@ hr {
 }
 
 .cardContainer {
-    width: calc(360px * var(--cardScale));
-    height: calc(540px * var(--cardScale));
+    width: calc(var(--cardWidth) * var(--cardScale));
+    height: calc(var(--cardHeight) * var(--cardScale));
     overflow: hidden;
 }
 
@@ -141,7 +164,7 @@ hr {
 }
 
 .score {
-    font-size: 1.5rem !important;
+    font-size: var(--scoreSize) !important;
     /* margin-top: 10%;
     text-align: center;
     vertical-align: middle; */
@@ -155,26 +178,36 @@ i {
     vertical-align: middle;
 }
 
+.buttons {
+    width: 100%;
+    border-top: 1px solid white;
+    margin: auto;
+    height: var(--buttonsHeight);
+    touch-action: manipulation;
+}
+
 .buttons .gameButton {
     margin-right: 1rem;
-    margin-top: 4rem;
+    margin-top: auto;
 }
 
 .hand {
     margin-top: 4rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
     padding: 1rem;
 }
 
 .playerHand {
     max-width: 30%;
-    min-width: 20rem;
+    min-width: calc(var(--cardWidth) * var(--cardScale) * 1.5);
     border: 2px none white;
     border-radius: calc(var(--cardBorderRadius)/2);
 }
 
 .dealerHand {
     max-width: 70%;
-    min-width: 20rem;
+    min-width: var(--cardWidth);
 }
 
 #chat {
@@ -182,10 +215,15 @@ i {
     padding: 0;
     /* height: 100%; */
     color: white;
-    font-size: 1.3em;
+    font-size: var(--textSize);
     border-left: 1px solid white;
     overflow:auto;
     height: 100%;
+    background-color: var(--primaryColor);
+}
+
+.log {
+    border-top: 1px solid white;
 }
 
 .chatItem {
@@ -193,7 +231,7 @@ i {
     margin: 1rem;
 }
 
-#content {
+.content {
     height: calc(100% - var(--navbarHeight) - .1rem);
     margin-top: var(--navbarHeight);
 }
@@ -211,7 +249,7 @@ i {
 
 .statistics > * {
     color: white;
-    font-size: 1.3rem;
+    font-size: var(--textSize);
     margin: .5rem 0 .5rem 0;
     display: inline-block;
     text-align: right;
@@ -240,28 +278,77 @@ i {
     width: 20%;
     padding: .5rem;
     border-radius: 4px;
+    background-color: var(--primaryColor);
+}
+
+.resetStatsButton {
+    width: 9rem;
+    font-size: 1.1rem; 
+    text-align: center; 
+    margin-left: auto;
 }
 
 @media (orientation: portrait) {
 
     :root {
-        --cardScale: .8;
+        --cardScale: .7;
         --cardBorderRadius: 30px;
         --navbarHeight: 5rem;
         --primaryColor: darkseagreen;
         --primaryAccentColor: rgb(108, 146, 108);
+        --buttonsHeight: 20%; 
+        --textSize: 1.8rem !important;
     }
 
-    #content {
-        height: 80%;
-    }
     .statistics {
-        position: inherit;
+        position: initial;
+        top: initial;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: auto;
+        display: block;
     }
 
     .statistics > * {
+        display: block;
         color: white;
-        font-size: 1.3rem;
         
+    }
+
+    .resetStatsButton {
+        width: 12rem;
+        font-size: var(--textSize);
+    }
+
+    #board {
+        /* overflow: hidden; */
+    }
+
+    .gameButton {
+        height: 7rem;
+        width: 7rem;
+        /* border-radius: 50%; */
+    }
+
+    @keyframes loadingScreenAnim {
+        0% {visibility: visible;opacity: 1.0;}
+        50% {visibility: visible;opacity: 1.0;}
+        100% {visibility: hidden;opacity: 0.0;}
+    }
+
+    #loadingScreen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 120%;
+        height: 120%;
+        background-color: white;
+        visibility: hidden;
+        opacity: 1.0;
+        z-index: 999;
+        animation-name: loadingScreenAnim;
+        animation-duration: .7s;   
+        animation-timing-function: ease-out;
     }
   }
