@@ -137,7 +137,7 @@ function bjNewRound()
     catch (e) 
     {
         console.error(e);
-        alertAndDispose("Shoe is empty, starting new round...");
+        alertAndDispose(e);
         generateDecks();
         bjRoundFinished();
         bjNewRound();
@@ -255,7 +255,7 @@ function bjHit()
     }
     catch (e) {
         console.error(e);
-        alertAndDispose("Shoe is empty, starting new round...");
+        alertAndDispose(e);
         generateDecks();
         bjRoundFinished();
         bjNewRound();
@@ -301,9 +301,13 @@ function bjPlayDealerAndEvaluate()
         let currPlayerHandCards = playerHandsCards[id];
 
         let [playerScore, playerIsSoftScore] = bjCheckPlayerScore(currPlayerHand, currPlayerHandCards);
+
+        let result = RESULT.WON;
         if (surrenderedPlayers.includes(id))
         {
             addChatMessage(currPlayerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player "+(id+1)+" surrendered!");
+            result = RESULT.LOST;
+            statsAddResult(result);
             continue;
         }
 
@@ -314,19 +318,23 @@ function bjPlayDealerAndEvaluate()
         else if (playerScore > BLACKJACK_VALUE)
         {
             addChatMessage(currPlayerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player "+(id+1)+" busts!");
+            result = RESULT.LOST;
         }
         else if (score > playerScore)
         {
             addChatMessage(currPlayerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player "+(id+1)+" loses!");
+            result = RESULT.LOST;
         }
         else if (score == playerScore)
         {
             addChatMessage(currPlayerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player "+(id+1)+" Push!");
+            result = RESULT.PUSH;
         }
         else if (score < playerScore)
         {
             addChatMessage(currPlayerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player "+(id+1)+" wins!");
         }
+        statsAddResult(result);
     }
 }
 
@@ -366,7 +374,7 @@ function bjStand()
     }
     catch (e) {
         console.error(e);
-        alertAndDispose("Shoe is empty, starting new round...");
+        alertAndDispose(e);
         generateDecks();
         bjRoundFinished();
         bjNewRound();

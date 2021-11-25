@@ -709,6 +709,8 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
 
     let wrongColor = "#c90000";
     let correctColor = "white";
+
+    let isCorrect = true;
     switch (correctAction)
     {
         case "H":
@@ -719,6 +721,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
             else
             {
                 addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should hit)", wrongColor);
+                isCorrect = false;
             }
             break;
         case "S":
@@ -729,6 +732,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
             else
             {
                 addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should stand)", wrongColor);
+                isCorrect = false;
             }
             break;
         case "P":
@@ -739,6 +743,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
             else
             {
                 addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should split)", wrongColor);
+                isCorrect = false;
             }
             break;
         case "Dh":
@@ -751,6 +756,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
                 else
                 {
                     addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should double)", wrongColor);
+                    isCorrect = false;
                 }
             }
             else
@@ -762,6 +768,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
                 else
                 {
                     addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should hit)", wrongColor);
+                    isCorrect = false;
                 }
             }
             break;
@@ -775,6 +782,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
                 else
                 {
                     addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should double)", wrongColor);
+                    isCorrect = false;
                 }
             }
             else
@@ -786,6 +794,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
                 else
                 {
                     addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should stand)", wrongColor);
+                    isCorrect = false;
                 }
             }
             break;
@@ -799,6 +808,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
                 else
                 {
                     addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should surrender)", wrongColor);
+                    isCorrect = false;
                 }
             }
             else
@@ -810,6 +820,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
                 else
                 {
                     addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should hit)", wrongColor);
+                    isCorrect = false;
                 }
             }
             break;
@@ -823,6 +834,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
                 else
                 {
                     addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should surrender)", wrongColor);
+                    isCorrect = false;
                 }
             }
             else
@@ -834,6 +846,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
                 else
                 {
                     addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should stand)", wrongColor);
+                    isCorrect = false;
                 }
             }
             break;
@@ -847,6 +860,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
                 else
                 {
                     addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should surrender)", wrongColor);
+                    isCorrect = false;
                 }
             }
             else
@@ -858,10 +872,24 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
                 else
                 {
                     addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should split)", wrongColor);
+                    isCorrect = false;
                 }
             }
             break;
         default:
             alertAndDispose("action not supported!");
+            isCorrect = null;
     }
+    if (isCorrect !== null)
+    {
+        if (isCorrect)
+        {
+            statsAddDecision(DECISION.CORRECT);
+        }
+        else
+        {
+            statsAddDecision(DECISION.WRONG);
+        }
+    }
+    
 }

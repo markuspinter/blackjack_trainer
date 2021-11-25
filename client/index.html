@@ -83,6 +83,15 @@
             <div id="chat" class="col-2">
             </div>
         </div>
+        <div class="statistics">
+            <p class="handsPlayed"><span class="statLabel">Hands Played: </span><span class="statValue"></span></p>
+            <p class="decisions"><span class="statLabel">Decisions: </span><span class="statValue"></span></p>
+            <p class="decisionsWrong"><span class="statLabel">Wrong Decisions: </span><span class="statValue"></span></p>
+            <p class="decisionsScore"><span class="statLabel">Score: </span><span class="statValue"></span>%</p>
+            <p class="winLooseRatio"><span class="statLabel">Win/Loose Ratio: </span><span class="statValue"></span>%</p>
+            <button class="btn btn-secondary" onclick="onResetStats(this)" style="width: 8rem; font-size: 1rem; text-align: center; margin-left: auto;">Reset Stats</button>
+        </div>
+
         <div class="modal fade" id="chartModal" tabindex="-1" role="dialog" aria-labelledby="chartModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
@@ -99,6 +108,7 @@
               </div>
             </div>
           </div>
+        
     </div>
     
 
@@ -115,6 +125,8 @@
     <script src="js/utils.js"></script>
     <script src="js/card.js"></script>
     <script src="js/deck.js"></script>
+    <script src="js/statistics.js"></script>
+    
     <script src="js/strategies.js"></script>
     <script src="js/blackjack.js"></script>
     <script src="js/main.js"></script>
