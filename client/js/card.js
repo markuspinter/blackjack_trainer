@@ -22,14 +22,14 @@ function setCardTexture(card, type, isFacedDown=false)
     if (isFacedDown)
     {
         $(card).attr("faceddown", true);
-        $(card).css("background-image", "url(../img/back.png)");
+        $(card).css("background-image", "url(img/back.png)");
         $(card).css("background-position", "0px 0px");
     }
     else
     {
         let offset = -(BASE_OFFSET_X + (cards[type] % SPRITE_WIDTH) * CARD_WIDTH + (cards[type] % SPRITE_WIDTH) * OFFSET_X) + "px " + 
         -(BASE_OFFSET_Y + Math.trunc(cards[type] / SPRITE_WIDTH) * CARD_HEIGHT + Math.trunc(cards[type] / SPRITE_WIDTH) * OFFSET_Y) + "px";
-        $(card).css("background-image", "url(../img/playing_cards.svg)");
+        $(card).css("background-image", "url(img/playing_cards.svg)");
         $(card).css("background-position", offset);
     }
     
