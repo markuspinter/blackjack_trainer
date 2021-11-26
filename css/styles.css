@@ -1,0 +1,375 @@
+:root {
+    --cardScale: 0.4;
+    --cardBorderRadius: 30px;
+    --navbarHeight: 5rem;
+    --primaryColor: darkseagreen;
+    --primaryAccentColor: rgb(108, 146, 108);
+    --buttonsHeight: 10rem; 
+    --cardWidth: 360px;
+    --cardHeight: 540px;
+    --textSize: 1rem;
+    --scoreSize: 1rem;
+}
+
+body, html {
+    /* min-height:100vh; */
+    height: calc(100%);
+    width: 100%;
+    background-color: var(--primaryColor);
+    /* overflow: hidden; */
+    overflow: auto;
+    /* touch-action: manipulation; */
+    position:fixed;
+    scroll-behavior: smooth;
+}
+
+body {
+    font: 13px Helvetica, SansSerif;
+    margin-top: 0px;
+}
+
+#board .row {
+    margin: 0 !important;
+}
+
+#titleBar {
+	margin-top: 0rem;
+	margin-bottom: 0 !important;
+	display: flex;
+    flex-direction: row;
+	align-items: center;
+	width: 100%;
+    font-weight: lighter;
+	height: var(--navbarHeight);
+    background-color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+
+.gameAlert {
+    position: fixed;
+    top: calc(var(--navbarHeight) + 1rem);
+    left: calc(50% - (40% / 2));
+    z-index: 999;
+    font-size: 1rem;
+    width: 40%;
+}
+
+#titleBar > *
+{
+    font-size: 1rem;
+    margin: auto;
+}
+
+hr {
+    margin: 0rem;
+    background-color: white;
+}
+
+#title {
+   /* margin-top: 1.4rem; */
+   margin-left: 1rem;
+   font-size: 1.8rem;
+}
+
+#subtitle {
+   margin-top: 1.8rem;
+   margin-left: 1rem;
+   font-size: 1rem;
+}
+
+#versionLabel {
+    font-size: 1rem;
+    float: right;
+    text-align: right;
+}
+
+#board {
+    background-color: var(--primaryColor);
+    height: 100%;
+    width: auto;
+    padding: 0;
+}
+
+.gameButton {
+    height: 4.5rem;
+    width: 4.5rem;
+    /* border-radius: 50%; */
+}
+
+.hand, .gameButton {
+    display: flex;
+    transform-origin: center;
+    justify-content: center;
+    align-items: center;
+    margin: auto 0;
+}
+
+.container-fluid {
+    margin: 0;
+    
+}
+
+.cardContainer {
+    width: calc(var(--cardWidth) * var(--cardScale));
+    height: calc(var(--cardHeight) * var(--cardScale));
+    overflow: hidden;
+}
+
+.cardContainer:last-child {
+    overflow: visible;
+}
+
+.card{
+    transform-origin: top left;
+    transform: scale(var(--cardScale));
+}
+
+.card {
+    background-image: url("img/back.png");
+    background-repeat: no-repeat;
+
+    height: 540px;
+    width: 360px;
+
+    border-radius: var(--cardBorderRadius);
+}
+
+.score {
+    align-self: flex-start;
+    min-width: 3rem;
+    min-height: 3rem;
+    border-radius: 15%;
+    margin-right: 2rem;
+    background-color: white;   
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
+    padding-top: .65rem;
+    font-style: normal;
+    font-weight: lighter;
+}
+
+.score {
+    font-size: var(--scoreSize) !important;
+    /* margin-top: 10%;
+    text-align: center;
+    vertical-align: middle; */
+}
+
+i {
+    font-size: 2.5rem;
+    font-style: normal;
+    font-weight: lighter;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.buttons {
+    width: 100%;
+    border-top: 1px solid white;
+    margin: auto;
+    height: var(--buttonsHeight);
+    touch-action: manipulation;
+}
+
+.buttons .gameButton {
+    margin-right: 1rem;
+    margin-top: auto;
+}
+
+.hand {
+    margin-top: 4rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
+    padding: 1rem;
+}
+
+.playerHand {
+    max-width: 30%;
+    min-width: calc(var(--cardWidth) * var(--cardScale) * 1.5);
+    border: 2px none white;
+    border-radius: calc(var(--cardBorderRadius)/2);
+}
+
+.dealerHand {
+    max-width: 70%;
+    min-width: var(--cardWidth);
+}
+
+#chat {
+    margin: 0;
+    padding: 0;
+    /* height: 100%; */
+    color: white;
+    font-size: var(--textSize);
+    border-left: 1px solid white;
+    overflow:auto;
+    height: 100%;
+    background-color: var(--primaryColor);
+}
+
+.sidebar .log {
+    border-top: 1px solid white;
+}
+
+.sidebar .statistics
+{
+    border-left: none;
+    border-right: none;
+}
+
+.chatItem {
+    display: inline-block;
+    margin: 1rem;
+}
+
+.content {
+    height: calc(100% - var(--navbarHeight) - .1rem);
+    margin-top: var(--navbarHeight);
+}
+
+.btn-secondary {
+    background-color: var(--primaryColor);
+    color: white;
+    border-color: white;
+}
+
+.btn-secondary:hover {
+    background-color: var(--primaryAccentColor);
+    border-color: white;
+}
+
+.statistics > * {
+    color: white;
+    font-size: var(--textSize);
+    margin: .5rem 0 .5rem 0;
+    display: inline-block;
+    text-align: right;
+}
+
+.statistics p:nth-last-child(1)
+{
+    margin-right: .5rem;
+}
+
+.statLabel {
+    float: left;
+    margin-right: .5rem;
+}
+
+.statistics {
+    position: fixed;
+    top: calc(var(--navbarHeight) + 1rem); /*Be sure to make spaces between operands and operator*/
+    left: 1rem;
+    z-index: 999;
+    border: 1px solid white;
+    display: flex;
+    flex-direction: column;
+    /* max-width: 20%;
+    min-width: 15rem; */
+    width: 20%;
+    padding: .5rem;
+    border-radius: 4px;
+    background-color: var(--primaryColor);
+}
+
+.resetStatsButton {
+    width: 9rem;
+    font-size: 1.1rem; 
+    text-align: center; 
+    margin-left: auto;
+}
+
+#settingsModal .modal-body > * {
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+    font-size: var(--textSize);
+}
+
+@media (orientation: portrait) {
+
+    :root {
+        /* --cardScale: .7;
+        --cardBorderRadius: 30px;
+        --navbarHeight: 5rem;
+        --primaryColor: darkseagreen;
+        --primaryAccentColor: rgb(108, 146, 108); */
+        --buttonsHeight: 40%; 
+        /* --textSize: 1.8rem !important; */
+    }
+
+    .statistics {
+        position: initial;
+        top: initial;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .statistics > * {
+        display: block;
+        color: white;
+        
+    }
+
+    .gameButton {
+        height: 5rem;
+        width: 5rem;
+    }
+/*
+    .resetStatsButton {
+        width: 12rem;
+        font-size: var(--textSize);
+    }
+
+    .btn {
+        font-size: var(--textSize);
+    }
+
+    .gameButton {
+        height: 7rem;
+        width: 7rem;
+    }
+
+    @keyframes loadingScreenAnim {
+        0% {visibility: visible;opacity: 1.0;}
+        50% {visibility: visible;opacity: 1.0;}
+        100% {visibility: hidden;opacity: 0.0;}
+    }
+
+    #loadingScreen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 120%;
+        height: 120%;
+        background-color: white;
+        visibility: hidden;
+        opacity: 1.0;
+        z-index: 999;
+        animation-name: loadingScreenAnim;
+        animation-duration: .7s;   
+        animation-timing-function: ease-out;
+    }
+
+    #chartModal .modal-dialog
+    {
+        max-width: 90%;
+    }
+
+    #chartModal h5
+    {
+        font-size: var(--textSize);
+    }
+
+    img
+    {
+        width: 100%;
+        height: 100%;
+    }
+  } */
