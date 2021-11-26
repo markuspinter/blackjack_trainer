@@ -7,21 +7,8 @@
     --buttonsHeight: 10rem; 
     --cardWidth: 360px;
     --cardHeight: 540px;
-    --textSize: 1.3rem;
-    --scoreSize: 1.5rem;
-}
-
-@media (orientation: portrait) {
-
-    :root {
-        --cardScale: .7;
-        --cardBorderRadius: 30px;
-        --navbarHeight: 5rem;
-        --primaryColor: darkseagreen;
-        --primaryAccentColor: rgb(108, 146, 108);
-        --buttonsHeight: 20%; 
-        --fontSize: 1.8rem !important;
-    }
+    --textSize: 1rem;
+    --scoreSize: 1rem;
 }
 
 body, html {
@@ -32,6 +19,8 @@ body, html {
     /* overflow: hidden; */
     overflow: auto;
     /* touch-action: manipulation; */
+    position:fixed;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -105,8 +94,8 @@ hr {
 }
 
 .gameButton {
-    height: 5rem;
-    width: 5rem;
+    height: 4.5rem;
+    width: 4.5rem;
     /* border-radius: 50%; */
 }
 
@@ -171,7 +160,7 @@ hr {
 }
 
 i {
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-style: normal;
     font-weight: lighter;
     display: inline-block;
@@ -222,8 +211,14 @@ i {
     background-color: var(--primaryColor);
 }
 
-.log {
+.sidebar .log {
     border-top: 1px solid white;
+}
+
+.sidebar .statistics
+{
+    border-left: none;
+    border-right: none;
 }
 
 .chatItem {
@@ -291,13 +286,13 @@ i {
 @media (orientation: portrait) {
 
     :root {
-        --cardScale: .7;
+        /* --cardScale: .7;
         --cardBorderRadius: 30px;
         --navbarHeight: 5rem;
         --primaryColor: darkseagreen;
-        --primaryAccentColor: rgb(108, 146, 108);
-        --buttonsHeight: 20%; 
-        --textSize: 1.8rem !important;
+        --primaryAccentColor: rgb(108, 146, 108); */
+        --buttonsHeight: 40%; 
+        /* --textSize: 1.8rem !important; */
     }
 
     .statistics {
@@ -316,19 +311,23 @@ i {
         
     }
 
+    .gameButton {
+        height: 5rem;
+        width: 5rem;
+    }
+/*
     .resetStatsButton {
         width: 12rem;
         font-size: var(--textSize);
     }
 
-    #board {
-        /* overflow: hidden; */
+    .btn {
+        font-size: var(--textSize);
     }
 
     .gameButton {
         height: 7rem;
         width: 7rem;
-        /* border-radius: 50%; */
     }
 
     @keyframes loadingScreenAnim {
@@ -351,4 +350,20 @@ i {
         animation-duration: .7s;   
         animation-timing-function: ease-out;
     }
-  }
+
+    #chartModal .modal-dialog
+    {
+        max-width: 90%;
+    }
+
+    #chartModal h5
+    {
+        font-size: var(--textSize);
+    }
+
+    img
+    {
+        width: 100%;
+        height: 100%;
+    }
+  } */

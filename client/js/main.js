@@ -12,12 +12,17 @@ $(window).on("load", function()
     
 });
 
-if (isMobile())
+if (isMobile() && window.matchMedia("(orientation: portrait)").matches)
 {
-    $("#chat").addClass("sidebar");
+    
     $(".chatButton").removeAttr("hidden");
     $("#chat").children().removeAttr("hidden");
     $("#chat").removeClass("col-2");
+    
+}
+else
+{
+    $("#chat").removeClass("sidebar");
 }
 
 function testCards()

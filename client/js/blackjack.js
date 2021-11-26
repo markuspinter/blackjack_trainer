@@ -48,11 +48,17 @@ function bjCreatePlayer(surrenderAllowed=true)
     }
     if (playerCount > 1)
     {
+        console.log("hello")
         playerHand.css("border-style", "solid");
     }
 
     playerHandsCards.push([]);
     $("#playerHands").prepend(newPlayer);
+    if (playerHand !== null)
+    {
+        $(".boardContent")[0].scrollTo(0, (playerHand[0].offsetTop + playerHand[0].offsetHeight) - $(".boardContent")[0].clientHeight);
+    }
+    
 
     if (playerCount > 2)
     {
@@ -86,6 +92,7 @@ function bjSwitchPlayer(playerID)
     
     playerHandCards = playerHandsCards[currPlayerID];
     
+    $(".boardContent")[0].scrollTo(0, (playerHand[0].offsetTop + playerHand[0].offsetHeight) - $(".boardContent")[0].clientHeight);
     
     let score = bjCheckDealerScore(dealerHand, dealerHandCards);
     let [playerScore, playerIsSoftScore] = bjCheckPlayerScore(playerHand, playerHandCards);
