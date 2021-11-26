@@ -27,7 +27,7 @@ const cardsValues = {
 };
 
 generateDecks();
-bjNewRound();
+bjRoundFinished();
 
 function bjIsPair(handCards)
 {
@@ -145,7 +145,7 @@ function bjNewRound()
 
         bjTimer.reset();
         bjTimer.start();
-        
+
         bjSwitchPlayer(0);
 
     }
