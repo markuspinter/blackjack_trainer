@@ -677,6 +677,9 @@ function updateStrategy()
 
 function checkStrategy(action, dealerHand, playerHand, playerCards)
 {
+    bjTimer.stop();
+    let time = bjTimer.reset();
+
     let isPair = bjIsPair(playerCards);
 
     let playerScore = parseInt(playerHand.find(".score").attr("score"));
@@ -898,5 +901,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
             statsAddDecision(DECISION.WRONG);
         }
     }
+    statsAddTime(time);
+    bjTimer.start();
     
 }

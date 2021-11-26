@@ -5,6 +5,10 @@ var playerHandCards = [];
 var playerHandsCards = [playerHandCards];
 var surrenderedPlayers = [];
 
+var bjTimer = new Stopwatch($("#timer")[0], {
+    delay: 100
+});
+
 const playerHandTemplate = '<div class="playerHand hand col" playerID="0"><span class="score" hidden>--</span></div>'
 
 var playerCount = 0;
@@ -139,6 +143,9 @@ function bjNewRound()
 
         bjDealCard(dealerHand, dealerHandCards, count=1, isFaceDown=true);
 
+        bjTimer.reset();
+        bjTimer.start();
+        
         bjSwitchPlayer(0);
 
     }
@@ -156,6 +163,8 @@ function bjRoundFinished()
 {
     $("#newRound").removeAttr("disabled");
     $(".gameAction").attr("disabled", true);
+    bjTimer.stop();
+    bjTimer.reset();
 }
 
 function bjDealCard(hand, handCardsArray, count=1, isFaceDown=false)
@@ -370,6 +379,7 @@ function bjPlayerFinished()
         {
             $("#split").attr("disabled", true);
         }
+        bjTimer.reset();
     }
 }
 

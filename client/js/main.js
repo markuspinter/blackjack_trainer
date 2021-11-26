@@ -25,6 +25,30 @@ else
     $("#chat").removeClass("sidebar");
 }
 
+$( window ).on( "orientationchange", function( event ) {
+    
+    var orientation = (screen.orientation || {}).type || screen.mozOrientation || screen.msOrientation;
+    console.log(orientation);
+    if (orientation.includes("landscape")) 
+    {
+        $("#chat").removeClass("sidebar");
+        $(".chatButton").attr("hidden", true);
+        $("#chat").children().first().attr("hidden", true);
+        $("#chat").addClass("col-2");
+    } 
+    else if (orientation.includes("portrait")) 
+    {
+        $(".chatButton").removeAttr("hidden");
+        $("#chat").children().first().removeAttr("hidden");
+        $("#chat").removeClass("col-2");
+        $("#chat").addClass("sidebar");
+    } 
+    else 
+    {
+        console.error("orientation type not supported: " + orientation);
+    }
+});
+
 function testCards()
 {
     var i = 0;

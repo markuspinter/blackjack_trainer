@@ -38,6 +38,7 @@ body {
 	display: flex;
     flex-direction: row;
 	align-items: center;
+    justify-content: flex-end;
 	width: 100%;
     font-weight: lighter;
 	height: var(--navbarHeight);
@@ -46,6 +47,16 @@ body {
     top: 0;
     left: 0;
     z-index: 999;
+}
+
+#titleBar > *
+{
+    font-size: 1rem;
+    margin: .5rem;
+}
+
+#title {
+    margin-right: auto;
 }
 
 .gameAlert {
@@ -57,11 +68,7 @@ body {
     width: 40%;
 }
 
-#titleBar > *
-{
-    font-size: 1rem;
-    margin: auto;
-}
+
 
 hr {
     margin: 0rem;
@@ -195,7 +202,7 @@ i {
 }
 
 .dealerHand {
-    max-width: 70%;
+    max-width: calc(var(--cardWidth) * var(--cardScale) * 3);
     min-width: var(--cardWidth);
 }
 
@@ -278,7 +285,7 @@ i {
 
 .resetStatsButton {
     width: 9rem;
-    font-size: 1.1rem; 
+    font-size: var(--textSize);
     text-align: center; 
     margin-left: auto;
 }
@@ -297,8 +304,20 @@ i {
         --navbarHeight: 5rem;
         --primaryColor: darkseagreen;
         --primaryAccentColor: rgb(108, 146, 108); */
-        --buttonsHeight: 40%; 
+        --buttonsHeight: 30%; 
         /* --textSize: 1.8rem !important; */
+    }
+
+    #board
+    {
+        margin-top: 10%;
+    }
+
+    .gameAlert
+    {
+        left: 1rem;
+        top: calc(var(--navbarHeight) + 1rem);
+        width: 80%;
     }
 
     .statistics {

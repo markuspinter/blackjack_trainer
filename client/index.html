@@ -70,8 +70,11 @@
             <div id="chat" class="col-2 sidebar">
                 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" hidden>×</a>
                 <div class="statistics">
+                    <p class="timer"><span class="statLabel">Timer: </span><span id="timer" class="stopwatch"></span>&nbsp;sec</p>
+                    <p class="timeAvg"><span class="statLabel">Average: </span><span class="statValue"></span>&nbsp;sec</p>
                     <p class="handsPlayed"><span class="statLabel">Hands Played: </span><span class="statValue"></span></p>
                     <p class="decisions"><span class="statLabel">Decisions: </span><span class="statValue"></span></p>
+                    <p class="decisionsCorrect"><span class="statLabel">Correct Decisions: </span><span class="statValue"></span></p>
                     <p class="decisionsWrong"><span class="statLabel">Wrong Decisions: </span><span class="statValue"></span></p>
                     <p class="decisionsScore"><span class="statLabel">Score: </span><span class="statValue"></span>%</p>
                     <p class="winLooseRatio"><span class="statLabel">Win/Loose Ratio: </span><span class="statValue"></span>%</p>
@@ -151,6 +154,7 @@
     </script>
 
     <script src="js/utils.js"></script>
+    <script src="js/timer.js"></script>
     <script src="js/sidebar.js"></script>
     <script src="js/card.js"></script>
     <script src="js/deck.js"></script>
