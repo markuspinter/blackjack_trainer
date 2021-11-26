@@ -182,6 +182,8 @@ hr {
     background-color: white;   
     width: 3rem;
     height: 3rem;
+    min-width: 3rem;
+    min-height: 3rem;
     font-style: normal;
     font-weight: lighter;
 }
@@ -397,6 +399,8 @@ i {
     {
         width: 3.5rem;
         height: 3.5rem;
+        min-width: 3.5rem;
+        min-height: 3.5rem;
         margin-left: -5.5rem;
     }
 
