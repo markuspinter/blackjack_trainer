@@ -1,3 +1,8 @@
+#Start
+
+https://markuspinter.github.io/blackjack_trainer/client/index.html
+
+
 surrender counts as loosing, since you loose money with this action
 a push doesn't affect the win loose ratio
 
