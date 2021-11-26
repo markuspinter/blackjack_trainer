@@ -51,6 +51,12 @@ function resetStats()
     
     WIN_LOOSE_RATIO = 0;
     changeStat($(".winLooseRatio .statValue"), WIN_LOOSE_RATIO);
+
+    TIME_MEASUREMENTS = [];
+    TIME_AVERAGE = 0;
+    saveToCache("bjTrainerTimeMeasurements", JSON.stringify(TIME_MEASUREMENTS));
+    changeStat($(".timeAvg .statValue"), TIME_AVERAGE.toFixed(3));
+    bjTimer.reset();
 }
 
 function loadStatFromCache(key, defaultVal=0)

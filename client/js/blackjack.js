@@ -27,11 +27,11 @@ const cardsValues = {
 };
 
 generateDecks();
-bjRoundFinished();
+bjNewRound();
 
 function bjIsPair(handCards)
 {
-    return handCards.every(card => card.charAt(0) === handCards[0].charAt(0))
+    return handCards.every(card => card.charAt(0) === handCards[0].charAt(0)) && handCards.length == 2;
 }
 
 function bjDisableSurrender()
@@ -135,6 +135,14 @@ function bjNewRound()
         dealerHand.find(".cardContainer").remove();
         dealerHandCards = [];
 
+        $(".resultLabel").text("");
+        $(".decisionLabel").text("");
+
+        if (!$("#showHandTotalCbox")[0].checked)
+        {
+            $(".score").attr("hidden", true);
+        }
+
         bjSwitchPlayer(0);
 
         bjDealCard(dealerHand, dealerHandCards, count=1, isFaceDown=false);
@@ -163,6 +171,7 @@ function bjRoundFinished()
 {
     $("#newRound").removeAttr("disabled");
     $(".gameAction").attr("disabled", true);
+    $(".score").removeAttr("hidden");
     bjTimer.stop();
     bjTimer.reset();
 }
@@ -323,6 +332,7 @@ function bjPlayDealerAndEvaluate()
         if (surrenderedPlayers.includes(id))
         {
             addChatMessage(currPlayerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player "+(id+1)+" surrendered!");
+            $(".resultLabel").text("You surrender!");
             result = RESULT.LOST;
             statsAddResult(result);
             continue;
@@ -331,25 +341,30 @@ function bjPlayDealerAndEvaluate()
         if (score > BLACKJACK_VALUE && playerScore <= BLACKJACK_VALUE)
         {
             addChatMessage(currPlayerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Dealer busts! Player "+(id+1)+" wins!");
+            $(".resultLabel").text("You win!");
         }
         else if (playerScore > BLACKJACK_VALUE)
         {
             addChatMessage(currPlayerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player "+(id+1)+" busts!");
+            $(".resultLabel").text("You loose!");
             result = RESULT.LOST;
         }
         else if (score > playerScore)
         {
             addChatMessage(currPlayerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player "+(id+1)+" loses!");
+            $(".resultLabel").text("You loose!");
             result = RESULT.LOST;
         }
         else if (score == playerScore)
         {
             addChatMessage(currPlayerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player "+(id+1)+" Push!");
+            $(".resultLabel").text("It's a Tie!");
             result = RESULT.PUSH;
         }
         else if (score < playerScore)
         {
             addChatMessage(currPlayerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player "+(id+1)+" wins!");
+            $(".resultLabel").text("You win!");
         }
         statsAddResult(result);
     }

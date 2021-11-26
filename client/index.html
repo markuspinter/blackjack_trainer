@@ -37,15 +37,18 @@
           <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#chartModal">Strategy Chart</button>
         <p id="versionLabel">v<span id="version">1.0.0</span></p>
     </div>
+
     <div class="content container-fluid">
         <hr/>
         <div class="row" style="height: 100%;">
             <div class="col" style="padding: 0; height: calc(100% - var(--buttonsHeight));">
                 <div id="board" class="container-fluid justify-content-center">
-                    <div class="boardContent justify-content-center" style="overflow: auto; height: inherit;">
-                        <div class="row justify-content-center">
+                    <div class="boardContent justify-content-center" style="overflow: auto; height: calc(100% - var(--buttonsHeight));">
+                        <p class="resultLabel"></p>
+                        <p class="decisionLabel"></p>
+                        <div class="row justify-content-center dealerContainer">
                             <div class="dealerHand hand col">
-                                <span class="score" hidden>--</span>
+                                <p class="score" hidden>--</p>
                             </div>
                         </div>
                     
@@ -112,11 +115,11 @@
               <h5 class="modal-title" id="settingsModalLabel">Settings</h5>
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
-            <div class="modal-body" style="display: flex; flex-direction: column; width: 50%; margin: auto;">
+            <div class="modal-body">
                 
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" id="doubleAfterSplitCbox" onchange="onDoubleAfterSplit(this);updateStrategy();" style="margin-top: 0rem;" checked>
-                    <label class="form-check-label" for="doubleAfterSplitCbox">
+                    <label class="form-check-label" for="doubleAfterSplitCbox" style="padding-left: 2rem;">
                       Double After Split Allowed
                     </label>
                   </div>

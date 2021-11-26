@@ -1,14 +1,14 @@
 :root {
     --cardScale: 0.4;
     --cardBorderRadius: 30px;
-    --navbarHeight: 5rem;
+    --navbarHeight: 4rem;
     --primaryColor: darkseagreen;
     --primaryAccentColor: rgb(108, 146, 108);
-    --buttonsHeight: 10rem; 
+    --buttonsHeight: 5rem; 
     --cardWidth: 360px;
     --cardHeight: 540px;
     --textSize: 1rem;
-    --scoreSize: 1rem;
+    --scoreSize: 1.3rem;
 }
 
 body, html {
@@ -49,10 +49,21 @@ body {
     z-index: 999;
 }
 
-#titleBar > *
+#titleBar > *, .btn
 {
     font-size: 1rem;
     margin: .5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+}
+
+#titleBar label
+{
+    white-space: initial;
+    overflow: initial;
+    text-overflow: initial;
+    text-align: center;
 }
 
 #title {
@@ -68,7 +79,23 @@ body {
     width: 40%;
 }
 
+.resultLabel, .decisionLabel {
+    text-align: center;
+    font: var(--scoreSize) Helvetica, SansSerif;
+    color: white;
+    width: auto;
+    height: 1rem;
+}
 
+.decisionLabel {
+    padding-top: 21.5rem;
+    margin-bottom: -21.5rem;
+}
+
+.resultLabel {
+    padding-top: 19.5rem;
+    margin-bottom: -19.5rem;
+}
 
 hr {
     margin: 0rem;
@@ -78,7 +105,7 @@ hr {
 #title {
    /* margin-top: 1.4rem; */
    margin-left: 1rem;
-   font-size: 1.8rem;
+   font-size: 1.6rem;
 }
 
 #subtitle {
@@ -146,24 +173,24 @@ hr {
 
 .score {
     align-self: flex-start;
-    min-width: 3rem;
-    min-height: 3rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 15%;
     margin-right: 2rem;
+    margin-left: -5rem;
     background-color: white;   
-    text-align: center;
-    display: inline-block;
-    vertical-align: middle;
-    padding-top: .65rem;
+    width: 3rem;
+    height: 3rem;
     font-style: normal;
     font-weight: lighter;
 }
 
 .score {
     font-size: var(--scoreSize) !important;
-    /* margin-top: 10%;
+    /* margin-top: 10%; */
     text-align: center;
-    vertical-align: middle; */
+    vertical-align: middle;
 }
 
 i {
@@ -178,7 +205,7 @@ i {
     width: 100%;
     border-top: 1px solid white;
     margin: auto;
-    height: var(--buttonsHeight);
+    height: 10rem;
     touch-action: manipulation;
 }
 
@@ -298,6 +325,13 @@ i {
     margin-left: auto;
 }
 
+#settingsModal .modal-body {
+    width: 80%;
+    display: flex; 
+    flex-direction: column; 
+    margin: auto;
+}
+
 #settingsModal .modal-body > * {
     margin-top: .5rem;
     margin-bottom: .5rem;
@@ -309,16 +343,26 @@ i {
     :root {
         /* --cardScale: .7;
         --cardBorderRadius: 30px;
-        --navbarHeight: 5rem;
         --primaryColor: darkseagreen;
         --primaryAccentColor: rgb(108, 146, 108); */
-        --buttonsHeight: 30%; 
-        /* --textSize: 1.8rem !important; */
+        --navbarHeight: 5rem;
+        --buttonsHeight: 15%; 
+        --scoreSize: 1.8rem;
+        --textSize: 1.6rem !important;
     }
 
-    #board
+    .btn:hover {
+        background-color: white;
+
+    }
+
+    .btn:focus {
+        box-shadow: none;
+    }
+
+    .dealerHand
     {
-        margin-top: 10%;
+        /* padding-top: 10%; */
     }
 
     .gameAlert
@@ -348,11 +392,43 @@ i {
         height: 5rem;
         width: 5rem;
     }
-/*
+
+    .score
+    {
+        width: 3.5rem;
+        height: 3.5rem;
+        margin-left: -5.5rem;
+    }
+
+    #settingsModal input[type='checkbox'] {
+        width: 1.8rem;
+        height: 1.8rem;
+    }
+
     .resetStatsButton {
         width: 12rem;
-        font-size: var(--textSize);
     }
+
+    .dealerContainer
+    {
+        padding-top: 10%;
+    }
+
+    .decisionLabel {
+        padding-top: 5rem;
+        margin-bottom: -5rem;
+    }
+    
+    .resultLabel {
+        padding-top: 2rem;
+        margin-bottom: -2rem;
+    }
+
+    .buttons {
+        height: 10rem;
+    }
+/*
+    
 
     .btn {
         font-size: var(--textSize);

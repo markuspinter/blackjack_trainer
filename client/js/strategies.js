@@ -714,6 +714,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
     let correctColor = "white";
 
     let isCorrect = true;
+    let decisionLabelText = "Correct!"
     switch (correctAction)
     {
         case "H":
@@ -724,6 +725,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
             else
             {
                 addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should hit)", wrongColor);
+                decisionLabelText = "Wrong, you should hit!";
                 isCorrect = false;
             }
             break;
@@ -735,6 +737,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
             else
             {
                 addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should stand)", wrongColor);
+                decisionLabelText = "Wrong, you should stand!";
                 isCorrect = false;
             }
             break;
@@ -746,6 +749,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
             else
             {
                 addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should split)", wrongColor);
+                decisionLabelText = "Wrong, you should split!";
                 isCorrect = false;
             }
             break;
@@ -759,6 +763,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
                 else
                 {
                     addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should double)", wrongColor);
+                    decisionLabelText = "Wrong, you should double!";
                     isCorrect = false;
                 }
             }
@@ -771,6 +776,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
                 else
                 {
                     addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should hit)", wrongColor);
+                    decisionLabelText = "Wrong, you should hit!";
                     isCorrect = false;
                 }
             }
@@ -785,6 +791,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
                 else
                 {
                     addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should double)", wrongColor);
+                    decisionLabelText = "Wrong, you should double!";
                     isCorrect = false;
                 }
             }
@@ -797,6 +804,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
                 else
                 {
                     addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should stand)", wrongColor);
+                    decisionLabelText = "Wrong, you should stand!";
                     isCorrect = false;
                 }
             }
@@ -811,6 +819,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
                 else
                 {
                     addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should surrender)", wrongColor);
+                    decisionLabelText = "Wrong, you should surrender!";
                     isCorrect = false;
                 }
             }
@@ -823,6 +832,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
                 else
                 {
                     addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should hit)", wrongColor);
+                    decisionLabelText = "Wrong, you should hit!";
                     isCorrect = false;
                 }
             }
@@ -837,6 +847,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
                 else
                 {
                     addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should surrender)", wrongColor);
+                    decisionLabelText = "Wrong, you should surrender!";
                     isCorrect = false;
                 }
             }
@@ -849,6 +860,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
                 else
                 {
                     addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should stand)", wrongColor);
+                    decisionLabelText = "Wrong, you should stand!";
                     isCorrect = false;
                 }
             }
@@ -863,6 +875,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
                 else
                 {
                     addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should surrender)", wrongColor);
+                    decisionLabelText = "Wrong, you should surrender!";
                     isCorrect = false;
                 }
             }
@@ -875,6 +888,7 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
                 else
                 {
                     addChatMessage(playerScoreString + " against " + dealerScoreString + ": Player "+playerNumber+" "+action+"! (wrong you should split)", wrongColor);
+                    decisionLabelText = "Wrong, you should split!";
                     isCorrect = false;
                 }
             }
@@ -887,16 +901,19 @@ function checkStrategy(action, dealerHand, playerHand, playerCards)
     
     if (isCorrect !== null)
     {
+        $(".decisionLabel").text(decisionLabelText);
         if (isCorrect)
         {
             statsAddDecision(DECISION.CORRECT);
+            $(".decisionLabel").css("color", "white");
         }
         else
         {
+            $(".decisionLabel").css("color", "black");
             //TODO: Make this prettier
             if (isMobile())
             {
-                alertAndDispose($(".log span").first().text())
+                // alertAndDispose($(".log span").first().text())
             }
             statsAddDecision(DECISION.WRONG);
         }
