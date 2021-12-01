@@ -37,7 +37,6 @@
           <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#chartModal">Strategy Chart</button>
         <p id="versionLabel">v<span id="version">1.0.0</span></p>
     </div>
-
     <div class="content container-fluid">
         <hr/>
         <div class="row" style="height: 100%;">
@@ -53,7 +52,15 @@
                         </div>
                     
                         <div id="playerHands" class="row justify-content-center">
+                            <!-- <div class="playerHand hand col">
+                              <img src="img/whiteChip.svg" class="cardContainer" style="border-radius: 50%; width:10rem; animation: rotation 1s infinite linear;">
+                              <img src="img/redChip.svg" class="cardContainer" style="border-radius: 50%; width:10rem; animation: rotation 2s infinite ease-in;">
+                              <img src="img/greenChip.svg" class="cardContainer" style="border-radius: 50%; width:10rem; animation: rotation 2s infinite ease-out;">
+                              <img src="img/blueChip.svg" class="cardContainer" style="border-radius: 50%; width:10rem; animation: rotation 1s infinite ease-in-out;">
+                              <img src="img/blackChip.svg" class="cardContainer" style="border-radius: 50%; width:10rem; animation: rotation 2s infinite ease;">
+                            </div> -->
                         </div>
+
                     </div>
                     
                     
@@ -123,19 +130,24 @@
                       Double After Split Allowed
                     </label>
                   </div>
-                  <select class="form-select" aria-label="Dealer Rules" onchange="onDealerRulesChange(value);updateStrategy();">
+                  <select class="form-select hitOnSoft17" aria-label="Dealer Rules" onchange="onDealerRulesChange(value);updateStrategy();">
                     <option selected value="true">Dealer hits on soft 17</option>
                     <option value="false">Dealer stands on soft 17</option>
                   </select>
-                  <select class="form-select" aria-label="Decks" onchange="onDecksChange(value);updateStrategy();">
+                  <select class="form-select deckSelect" aria-label="Decks" onchange="onDecksChange(value);updateStrategy();">
                     <option value="1">1 Deck</option>
                     <option value="2">2 Decks</option>
                     <option selected value="4">4 Decks</option>
                     <option value="6">6 Decks</option>
                     <option value="8">8 Decks</option>
                   </select>
-                  <select class="form-select" aria-label="Surrender Rules" onchange="onSurrenderRulesChange(value);updateStrategy();">
-                    <option selected value="1">Late Surrender</option>
+                  <select class="form-select deckMode" aria-label="Deck Mode" onchange="onPracticeModeChange(value);">
+                    <option selected value="0">Normal Deck</option>
+                    <option value="1">Pairs only</option>
+                    <option value="2">Soft Hands only</option>
+                  </select>
+                  <select class="form-select surrenderRules" aria-label="Surrender Rule" onchange="onSurrenderRulesChange(value);updateStrategy();">
+                    <option selected value="0">Late Surrender</option>
                   </select>
             </div>
             <div class="modal-footer">

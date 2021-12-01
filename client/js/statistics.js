@@ -69,11 +69,6 @@ function loadStatFromCache(key, defaultVal=0)
     return val;
 }
 
-function saveToCache(key, val)
-{
-    localStorage.setItem(key, val);
-}
-
 function changeStat(destinationElement, val)
 {
     console.log(val);
@@ -85,20 +80,6 @@ function changeStatAndSaveToCache(destinationElement, key, val)
 {
     localStorage.setItem(key, val);
     changeStat(destinationElement, val)
-}
-
-function getFromLocalStorageOrDefault(key, defaultVal=0)
-{
-    let val = localStorage.getItem(key);
-    if (val === null) 
-    {
-        val = defaultVal;
-    }
-    else if (!isNaN(val))
-    {
-        val = Number(val);
-    }
-    return val;
 }
 
 const DECISION = {

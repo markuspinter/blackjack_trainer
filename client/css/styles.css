@@ -150,6 +150,7 @@ hr {
     width: calc(var(--cardWidth) * var(--cardScale));
     height: calc(var(--cardHeight) * var(--cardScale));
     overflow: hidden;
+    /* margin-right: -1rem; */
 }
 
 .cardContainer:last-child {
@@ -340,6 +341,15 @@ i {
     font-size: var(--textSize);
 }
 
+@keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
+
 @media (orientation: portrait) {
 
     :root {
@@ -353,7 +363,7 @@ i {
         --textSize: 1.6rem !important;
     }
 
-    .btn:hover {
+    .buttons .btn:hover {
         background-color: white;
 
     }

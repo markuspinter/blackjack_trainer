@@ -36,7 +36,6 @@ var Stopwatch = function(elem, options) {
         offset = Date.now();
         interval = setInterval(update, options.delay);
       }
-      console.error(new Error("start").stack);
     }
   
     function stop() {
@@ -44,7 +43,6 @@ var Stopwatch = function(elem, options) {
         clearInterval(interval);
         interval = null;
       }
-      console.error(new Error("stop").stack);
       return clock / 1000;
     }
   
@@ -52,7 +50,6 @@ var Stopwatch = function(elem, options) {
       let time = clock;
       clock = 0;
       render(0);
-      console.error(new Error("reset").stack);
       return time / 1000;
     }
   

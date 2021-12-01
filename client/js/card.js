@@ -24,6 +24,7 @@ function setCardTexture(card, type, isFacedDown=false)
         $(card).attr("faceddown", true);
         $(card).css("background-image", "url(img/back.png)");
         $(card).css("background-position", "0px 0px");
+        $(card).css("border", "1px solid black");
     }
     else
     {

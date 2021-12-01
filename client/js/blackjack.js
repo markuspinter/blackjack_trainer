@@ -19,15 +19,21 @@ const BLACKJACK_VALUE = 21;
 var HIT_ON_SOFT_17 = true;
 var DOUBLE_AFTER_SPLIT = true;
 
+const BJ_DECK_MODE = {
+    NORMAL: 0,
+    PAIRS: 1,
+    SOFTHANDS: 2
+};
+
+var DECK_PRACTICE_MODE = BJ_DECK_MODE.NORMAL;
+
+
 const cardsValues = {
     "AS" : 11, "2S": 2, "3S": 3, "4S": 4, "5S": 5, "6S": 6, "7S": 7, "8S": 8, "9S": 9, "TS": 10, "JS": 10, "QS": 10, "KS": 10,
     "AH" : 11, "2H": 2, "3H": 3, "4H": 4, "5H": 5, "6H": 6, "7H": 7, "8H": 8, "9H": 9, "TH": 10, "JH": 10, "QH": 10, "KH": 10,
     "AD" : 11, "2D": 2, "3D": 3, "4D": 4, "5D": 5, "6D": 6, "7D": 7, "8D": 8, "9D": 9, "TD": 10, "JD": 10, "QD": 10, "KD": 10,
     "AC" : 11, "2C": 2, "3C": 3, "4C": 4, "5C": 5, "6C": 6, "7C": 7, "8C": 8, "9C": 9, "TC": 10, "JC": 10, "QC": 10, "KC": 10
 };
-
-generateDecks();
-bjNewRound();
 
 function bjIsPair(handCards)
 {
@@ -147,6 +153,7 @@ function bjNewRound()
 
         bjDealCard(dealerHand, dealerHandCards, count=1, isFaceDown=false);
         
+        //this is actually not correct dealing, since one card is dealt each player, then one to the dealer and so on, but it makes no statistical difference
         bjDealCard(playerHand, playerHandCards, count=2, isFaceDown=false);
 
         bjDealCard(dealerHand, dealerHandCards, count=1, isFaceDown=true);
@@ -163,7 +170,7 @@ function bjNewRound()
         alertAndDispose(e);
         generateDecks();
         bjRoundFinished();
-        bjNewRound();
+        // bjNewRound();
     }
 }
 
@@ -178,18 +185,94 @@ function bjRoundFinished()
 
 function bjDealCard(hand, handCardsArray, count=1, isFaceDown=false)
 {
-    for (let i=0; i < count; i++)
+    if (count == 2 && DECK_PRACTICE_MODE !== BJ_DECK_MODE.NORMAL)
     {
-        let nextCard = getNextCard();
-        if (nextCard === null)
+        if (DECK_PRACTICE_MODE === BJ_DECK_MODE.PAIRS)
         {
-            throw "Shoe is empty!";
+            
+            let nextCardValue = getRandomIntInclusive(2,11);
+            
+            if (nextCardValue == 10) nextCardValue = "T";
+            if (nextCardValue == 11) nextCardValue = "A";
+
+            for (let i=0; i < count; i++)
+            {
+                let nextCardSuit = ["S", "H", "D", "C"][getRandomIntInclusive(0,3)];
+
+                let nextCard = nextCardValue + nextCardSuit;
+
+                let cardContainer = $(cardTemplate).clone();
+                let card = cardContainer.find(".card")[0];
+                setCardTexture(card, nextCard, isFaceDown);
+                hand.append(cardContainer);
+                handCardsArray.push(nextCard);
+            }
+            
         }
-        let cardContainer = $(cardTemplate).clone();
-        let card = cardContainer.find(".card")[0];
-        setCardTexture(card, nextCard, isFaceDown);
-        hand.append(cardContainer);
-        handCardsArray.push(nextCard);
+        else if (DECK_PRACTICE_MODE === BJ_DECK_MODE.SOFTHANDS)
+        {
+            let nextCardValue = getRandomIntInclusive(2,10);
+            
+            if (nextCardValue == 10) nextCardValue = "T";
+            if (nextCardValue == 11) nextCardValue = "A";
+
+            let nextCardSuit = ["S", "H", "D", "C"][getRandomIntInclusive(0,3)];
+
+            let nextCard = "A" + nextCardSuit;
+
+            let cardContainer = $(cardTemplate).clone();
+            let card = cardContainer.find(".card")[0];
+            setCardTexture(card, nextCard, isFaceDown);
+            hand.append(cardContainer);
+            handCardsArray.push(nextCard);
+
+            nextCardSuit = ["S", "H", "D", "C"][getRandomIntInclusive(0,3)];
+
+            nextCard = nextCardValue + nextCardSuit;
+
+            cardContainer = $(cardTemplate).clone();
+            card = cardContainer.find(".card")[0];
+            setCardTexture(card, nextCard, isFaceDown);
+            //get some randomness on softhand order
+            if (getRandomIntInclusive(0,1) === 0)
+            {
+                hand.children().first().after(cardContainer);
+            }
+            else
+            {
+                hand.append(cardContainer);
+            }
+            handCardsArray.push(nextCard);
+        }
+        else
+        {
+            console.error("deck mode not found!");
+        }
+    }
+    else
+    {
+        for (let i=0; i < count; i++)
+        {
+            let nextCard;
+            if (DECK_PRACTICE_MODE !== BJ_DECK_MODE.NORMAL)
+            {
+                nextCard = Object.keys(cards)[getRandomIntInclusive(0,51)];
+            }
+            else
+            {
+                nextCard = getNextCard();
+            }
+            
+            if (nextCard === null)
+            {
+                throw "Shoe is empty!";
+            }
+            let cardContainer = $(cardTemplate).clone();
+            let card = cardContainer.find(".card")[0];
+            setCardTexture(card, nextCard, isFaceDown);
+            hand.append(cardContainer);
+            handCardsArray.push(nextCard);
+        }
     }
     
 }
