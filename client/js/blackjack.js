@@ -6,7 +6,7 @@ var playerHandsCards = [playerHandCards];
 var surrenderedPlayers = [];
 
 var bjTimer = new Stopwatch($("#timer")[0], {
-    delay: 100
+    delay: 10
 });
 
 const playerHandTemplate = '<div class="playerHand hand col" playerID="0"><span class="score" hidden>--</span></div>'
