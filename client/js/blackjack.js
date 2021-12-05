@@ -330,7 +330,7 @@ function bjCheckPlayerScore(hand, handCardsArray)
         }
     }
     
-    if (score == 21 && handCardsArray.length == 2)
+    if (score == 21 && handCardsArray.length == 2 && currPlayerID == 0) //@TODO: currPlayerID only for one player correct
     {
         //blackjack
         hand.find(".score").text("J")
@@ -440,9 +440,18 @@ function bjPlayDealerAndEvaluate()
         }
         else if (score == playerScore)
         {
-            addChatMessage(currPlayerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player "+(id+1)+" Push!");
-            $(".resultLabel").text("It's a Tie!");
-            result = RESULT.PUSH;
+            if (currPlayerHandCards.length == 2 && dealerHandCards.length > 2)
+            {
+                addChatMessage(currPlayerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player "+(id+1)+" wins!");
+                $(".resultLabel").text("You win!");
+            }
+            else
+            {
+                addChatMessage(currPlayerHand.find(".score").text() + " against " + dealerHand.find(".score").text() + ": Player "+(id+1)+" Push!");
+                $(".resultLabel").text("Push!");
+                result = RESULT.PUSH;
+            }
+            
         }
         else if (score < playerScore)
         {
@@ -470,12 +479,21 @@ function bjPlayerFinished()
         if (playerHandCards.length < 2)
         {
             bjDealCard(playerHand, playerHandCards);
-            bjCheckPlayerScore(playerHand, playerHandCards);
+            let [playerScore, playerIsSoftScore] = bjCheckPlayerScore(playerHand, playerHandCards);
+
+            if (playerScore >= BLACKJACK_VALUE)
+            {
+                bjPlayerFinished();
+            }
         }
         //check if split is allowed
         if (!bjIsPair(playerHandCards))
         {
             $("#split").attr("disabled", true);
+        }
+        else
+        {
+            $("#split").removeAttr("disabled");
         }
         bjTimer.reset();
     }

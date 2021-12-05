@@ -23,14 +23,15 @@ function generateDecks()
     {
         fisherYatesShuffle(deck);
     }
-    // deck[1] = "AS";
-    // deck[2] = "AC";
-    // deck[0] = "JC";
-    // deck[4] = "4S";
-    // deck[5] = "4S";
-    // deck[6] = "4S";
+    deck[1] = "AS";
+    deck[2] = "5C";
+    deck[0] = "JC";
+    deck[4] = "6S";
+    deck[5] = "JS";
+    deck[6] = "5S";
+    deck[7] = "JS";
 
-    // deck[3] = "6C";
+    deck[3] = "AC";
     console.log(deck);
 }
 
