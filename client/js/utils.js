@@ -23,6 +23,11 @@ document.onkeydown = function (event) {
     //     $("#debugSequenceCheck").parent().prop("hidden", !isHidden);
     // };
 
+    if (WAIT_FOR_USER_INPUT)
+    {
+        return;
+    }
+
     if (event.code === "KeyR")
     {
         $("#newRound:enabled").click();
@@ -91,4 +96,40 @@ function getFromLocalStorageOrDefault(key, defaultVal=0)
         val = false;
     }
     return val;
+}
+
+function onlyInteger(input) {
+    var val = input.value
+
+    console.info(val);
+
+    let int = parseInt(val);
+    if (isNaN(int))
+    {
+        if (val.charAt(0) === '-')
+        {
+            input.value = '-';
+        }
+        else
+        {
+            input.value = '';
+        }
+    }
+    else
+    {
+        input.value =  int;
+    }
+    
+}
+
+function onEnter(func, arg)
+{
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if(keycode == '13'){
+        func(arg);
+    }
+    //Stop the event from propogation to other handlers
+    //If this line will be removed, then keypress event handler attached 
+    //at document level will also be triggered
+    event.stopPropagation();
 }

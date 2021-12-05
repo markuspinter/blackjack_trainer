@@ -7,54 +7,77 @@
     <link rel="icon" type="image/png" sizes="any" href="img/icon.png">
     <link rel="apple-touch-icon" sizes="any" href="img/appIcon.png">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    
-    <link href="css/styles.css" rel="stylesheet"></link>
-    <link href="css/sidebar.css" rel="stylesheet"></link>
+
+    <link href="css/styles.css" rel="stylesheet">
+    </link>
+    <link href="css/sidebar.css" rel="stylesheet">
+    </link>
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
-    <meta name="viewport" content="user-scalable=0, initial-scale=0.6, maximum-scale=0.6, minimum-scale=0.6, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+    <meta name="viewport"
+        content="user-scalable=0, initial-scale=0.6, maximum-scale=0.6, minimum-scale=0.6, width=device-width, height=device-height, target-densitydpi=device-dpi" />
 
 </head>
 
 <body>
     <div id="disableAll"></div>
     <div id="templates" hidden>
-        
+
     </div>
 
 
     <div id="titleBar" style="margin-bottom: -2rem;">
-        
+
         <h1 id="title">BlackJack Trainer</h1>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="showHandTotalCbox" onchange="onShowHandTotal(this);" style="margin-top: 0rem;">
-            <label class="form-check-label" for="showHandTotalCbox">
-              Show hand total
-            </label>
-          </div>
-          <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#settingsModal">Settings</button>
-          <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#chartModal">Strategy Chart</button>
+        <div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="showHandTotalCbox"
+                    onchange="onShowHandTotal(this);" style="margin-top: 0rem;">
+                <label class="form-check-label" for="showHandTotalCbox">
+                    Show hand total
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="showCountCbox"
+                    onchange="onShowCount(this);" style="margin-top: 0rem;">
+                <label class="form-check-label" for="showCountCbox">
+                    Show count
+                </label>
+            </div>
+        </div>
+        <button type="button" class="btn btn-secondary" data-toggle="modal"
+            data-target="#settingsModal">Settings</button>
+        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#chartModal">Strategy
+            Chart</button>
         <p id="versionLabel">v<span id="version">1.0.0</span></p>
     </div>
     <div class="content container-fluid">
-        <hr/>
+        <hr />
         <div class="row" style="height: 100%;">
             <div class="col" style="padding: 0; height: calc(100% - var(--buttonsHeight));">
                 <div id="board" class="container-fluid justify-content-center">
-                    <div class="boardContent justify-content-center" style="overflow: auto; height: calc(100% - var(--buttonsHeight));">
-                        <p class="resultLabel"></p>
-                        <p class="decisionLabel"></p>
+                    <div class="boardContent justify-content-center"
+                        style="overflow: auto; height: calc(100% - var(--buttonsHeight));">
+                        <p class="uiLabel resultLabel"></p>
+                        <p class="uiLabel decisionLabel"></p>
+                        <div class="uiBox countChecker">
+                            <p class="uiLabel countCheckResponse w-100 text-center">Enter Running Count...</p>
+                            <div class="d-flex">
+                                <input type="text" class="form-control" aria-label="Enter Running Count..." placeholder="Enter Running Count..." onkeypress="onEnter(onSubmitCount, this);" oninput="onlyInteger(this);">
+                                <button type="button" class="btn btn-secondary" onclick="onSubmitCount($(this).siblings()[0]);">Submit</button>
+                            </div>
+                        </div>
                         <div class="row justify-content-center dealerContainer">
                             <div class="dealerHand hand col">
                                 <p class="score" hidden>--</p>
                             </div>
                         </div>
-                    
+
                         <div id="playerHands" class="row justify-content-center">
                             <!-- <div class="playerHand hand col">
                               <img src="img/whiteChip.svg" class="cardContainer" style="border-radius: 50%; width:10rem; animation: rotation 1s infinite linear;">
@@ -66,104 +89,138 @@
                         </div>
 
                     </div>
-                    
-                    
+
+
                     <div class="buttons row justify-content-center">
-                        <button id="surrender" type="button" class="btn btn-light gameAction gameButton" onclick="bjSurrender(this)" data-toggle="tooltip" data-placement="bottom" title="Surrender (A)" disabled><i class="bi bi-flag"></i></button>
-                        <button id="split" type="button" class="btn btn-light gameAction gameButton" onclick="bjSplit(this)" data-toggle="tooltip" data-placement="bottom" title="Split (S)" disabled style="transform: rotate(-90deg);"><i class="bi bi-arrows-expand"></i></button>
-                        <button id="double" type="button" class="btn btn-light gameAction gameButton" onclick="bjDouble(this)" data-toggle="tooltip" data-placement="bottom" title="Double (D)" disabled><i>x2</i></button>
-                        <button id="stand" type="button" class="btn btn-light gameAction gameButton" onclick="bjStand(this)" data-toggle="tooltip" data-placement="bottom" title="Stand (F)" disabled><i class="bi bi-x-circle"></i></button>
-                        <button id="hit" type="button" class="btn btn-light gameAction gameButton" onclick="bjHit(this)" data-toggle="tooltip" data-placement="bottom" title="Hit (G)" disabled><i class="bi bi-hand-index" style="margin-left: -15%;"></i></button>
-            
-                        <button id="newRound" type="button" class="btn btn-light gameButton" onclick="bjNewRound(this)" data-toggle="tooltip" data-placement="bottom" title="New Round (R)" disabled><i class="bi bi-check2"></i></button>
-            
-                        
+                        <button id="surrender" type="button" class="btn btn-light gameAction gameButton"
+                            onclick="bjSurrender(this)" data-toggle="tooltip" data-placement="bottom"
+                            title="Surrender (A)" disabled><i class="bi bi-flag"></i></button>
+                        <button id="split" type="button" class="btn btn-light gameAction gameButton"
+                            onclick="bjSplit(this)" data-toggle="tooltip" data-placement="bottom" title="Split (S)"
+                            disabled style="transform: rotate(-90deg);"><i class="bi bi-arrows-expand"></i></button>
+                        <button id="double" type="button" class="btn btn-light gameAction gameButton"
+                            onclick="bjDouble(this)" data-toggle="tooltip" data-placement="bottom" title="Double (D)"
+                            disabled><i>x2</i></button>
+                        <button id="stand" type="button" class="btn btn-light gameAction gameButton"
+                            onclick="bjStand(this)" data-toggle="tooltip" data-placement="bottom" title="Stand (F)"
+                            disabled><i class="bi bi-x-circle"></i></button>
+                        <button id="hit" type="button" class="btn btn-light gameAction gameButton" onclick="bjHit(this)"
+                            data-toggle="tooltip" data-placement="bottom" title="Hit (G)" disabled><i
+                                class="bi bi-hand-index" style="margin-left: -15%;"></i></button>
+
+                        <button id="newRound" type="button" class="btn btn-light gameButton" onclick="bjNewRound(this)"
+                            data-toggle="tooltip" data-placement="bottom" title="New Round (R)" disabled><i
+                                class="bi bi-check2"></i></button>
+
+
                     </div>
                 </div>
             </div>
             <div id="chat" class="col-2 sidebar">
                 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" hidden>×</a>
-                <div class="statistics">
-                    <p class="timer"><span class="statLabel">Timer: </span><span id="timer" class="stopwatch"></span>&nbsp;sec</p>
-                    <p class="timeAvg"><span class="statLabel">Average: </span><span class="statValue"></span>&nbsp;sec</p>
-                    <p class="handsPlayed"><span class="statLabel">Hands Played: </span><span class="statValue"></span></p>
+                <div class="uiBox statistics">
+                    <p class="timer"><span class="statLabel">Timer: </span><span id="timer"
+                            class="stopwatch"></span>&nbsp;sec</p>
+                    <p class="timeAvg"><span class="statLabel">Average: </span><span class="statValue"></span>&nbsp;sec
+                    </p>
+                    <p class="handsPlayed"><span class="statLabel">Hands Played: </span><span class="statValue"></span>
+                    </p>
                     <p class="decisions"><span class="statLabel">Decisions: </span><span class="statValue"></span></p>
-                    <p class="decisionsCorrect"><span class="statLabel">Correct Decisions: </span><span class="statValue"></span></p>
-                    <p class="decisionsWrong"><span class="statLabel">Wrong Decisions: </span><span class="statValue"></span></p>
+                    <p class="decisionsCorrect"><span class="statLabel">Correct Decisions: </span><span
+                            class="statValue"></span></p>
+                    <p class="decisionsWrong"><span class="statLabel">Wrong Decisions: </span><span
+                            class="statValue"></span></p>
                     <p class="decisionsScore"><span class="statLabel">Score: </span><span class="statValue"></span>%</p>
-                    <p class="winLooseRatio"><span class="statLabel">Win/Loose Ratio: </span><span class="statValue"></span>%</p>
+                    <p class="winLooseRatio"><span class="statLabel">Win/Loose Ratio: </span><span
+                            class="statValue"></span>%</p>
                     <button class="btn btn-secondary resetStatsButton" onclick="onResetStats(this)">Reset Stats</button>
                 </div>
                 <div class="log"></div>
-                
+
+            </div>
+            <div class="uiBox counts" hidden>
+                <p class="runningCount"><span class="statLabel">Running Count: </span><span class="statValue"></span></p>
+                <p class="decksLeft"><span class="statLabel">Decks Left: </span><span
+                    class="statValue"></span></p>
+                <p class="trueCount"><span class="statLabel">True Count: </span><span
+                        class="statValue"></span></p>
             </div>
         </div>
-        
-        
+
+
     </div>
     <button class="btn btn-secondary chatButton" onclick="openNav()" hidden><i class="bi bi-list"></i></button>
 
-    <div class="modal fade" id="chartModal" tabindex="-1" role="dialog" aria-labelledby="chartModalLabel" aria-hidden="true">
+    <div class="modal fade" id="chartModal" tabindex="-1" role="dialog" aria-labelledby="chartModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="chartModalLabel">---</h5>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="chartModalLabel">---</h5>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+                <div class="modal-body">
+                    <img id="chartImg" src="img/4ormore_h17_das.png" alt="strategy chart">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
             </div>
-            <div class="modal-body">
-                <img id="chartImg" src="img/4ormore_h17_das.png" alt="strategy chart">
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
         </div>
-      </div>
-      <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
+    </div>
+    <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="settingsModalLabel">Settings</h5>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="settingsModalLabel">Settings</h5>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="doubleAfterSplitCbox"
+                            onchange="onDoubleAfterSplit(this);updateStrategy();" style="margin-top: 0rem;" checked>
+                        <label class="form-check-label" for="doubleAfterSplitCbox" style="padding-left: 2rem;">
+                            Double After Split Allowed
+                        </label>
+                    </div>
+                    <select class="form-select hitOnSoft17" aria-label="Dealer Rules"
+                        onchange="onDealerRulesChange(value);updateStrategy();">
+                        <option selected value="true">Dealer hits on soft 17</option>
+                        <option value="false">Dealer stands on soft 17</option>
+                    </select>
+                    <select class="form-select deckSelect" aria-label="Decks"
+                        onchange="onDecksChange(value);updateStrategy();">
+                        <option value="1">1 Deck</option>
+                        <option value="2">2 Decks</option>
+                        <option selected value="4">4 Decks</option>
+                        <option value="6">6 Decks</option>
+                        <option value="8">8 Decks</option>
+                    </select>
+                    <select class="form-select deckMode" aria-label="Deck Mode" onchange="onPracticeModeChange(value);">
+                        <option selected value="0">Normal Deck</option>
+                        <option value="1">Pairs only</option>
+                        <option value="2">Soft Hands only</option>
+                    </select>
+                    <select class="form-select surrenderRules" aria-label="Surrender Rule"
+                        onchange="onSurrenderRulesChange(value);updateStrategy();">
+                        <option selected value="0">Late Surrender</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
             </div>
-            <div class="modal-body">
-                
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="doubleAfterSplitCbox" onchange="onDoubleAfterSplit(this);updateStrategy();" style="margin-top: 0rem;" checked>
-                    <label class="form-check-label" for="doubleAfterSplitCbox" style="padding-left: 2rem;">
-                      Double After Split Allowed
-                    </label>
-                  </div>
-                  <select class="form-select hitOnSoft17" aria-label="Dealer Rules" onchange="onDealerRulesChange(value);updateStrategy();">
-                    <option selected value="true">Dealer hits on soft 17</option>
-                    <option value="false">Dealer stands on soft 17</option>
-                  </select>
-                  <select class="form-select deckSelect" aria-label="Decks" onchange="onDecksChange(value);updateStrategy();">
-                    <option value="1">1 Deck</option>
-                    <option value="2">2 Decks</option>
-                    <option selected value="4">4 Decks</option>
-                    <option value="6">6 Decks</option>
-                    <option value="8">8 Decks</option>
-                  </select>
-                  <select class="form-select deckMode" aria-label="Deck Mode" onchange="onPracticeModeChange(value);">
-                    <option selected value="0">Normal Deck</option>
-                    <option value="1">Pairs only</option>
-                    <option value="2">Soft Hands only</option>
-                  </select>
-                  <select class="form-select surrenderRules" aria-label="Surrender Rule" onchange="onSurrenderRulesChange(value);updateStrategy();">
-                    <option selected value="0">Late Surrender</option>
-                  </select>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
     <!-- <div id="loadingScreen"></div> -->
 
-    <script src="https://cdn.socket.io/4.4.0/socket.io.min.js" integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.socket.io/4.4.0/socket.io.min.js"
+        integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.js"
+        integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
     <!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script> -->
 
     <script>
@@ -178,17 +235,25 @@
     <script src="js/card.js"></script>
     <script src="js/deck.js"></script>
     <script src="js/statistics.js"></script>
-    
+
     <script src="js/strategies.js"></script>
     <script src="js/blackjack.js"></script>
     <script src="js/main.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 
-    <a title="Real Time Web Analytics" href="http://clicky.com/101344583" style="position: fixed; bottom: 0; left: 0;"><img alt="Clicky" src="//static.getclicky.com/media/links/badge.gif" border="0" /></a>
+    <a title="Real Time Web Analytics" href="http://clicky.com/101344583"
+        style="position: fixed; bottom: 0; left: 0;"><img alt="Clicky"
+            src="//static.getclicky.com/media/links/badge.gif" border="0" /></a>
     <script async src="//static.getclicky.com/101344583.js"></script>
-    <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101344583ns.gif" /></p></noscript>
+    <noscript>
+        <p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101344583ns.gif" /></p>
+    </noscript>
 </body>
 
 </html>

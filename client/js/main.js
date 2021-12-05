@@ -11,6 +11,8 @@ $(window).on("load", function()
     console.log(isMobile());    
 });
 
+var WAIT_FOR_USER_INPUT = true;
+
 DOUBLE_AFTER_SPLIT = getFromLocalStorageOrDefault("bjTrainerDAS", defaultVal=true);
 $("#doubleAfterSplitCbox")[0].checked = DOUBLE_AFTER_SPLIT;
 
@@ -99,6 +101,20 @@ function onShowHandTotal(cbox)
     
 }
 
+function onShowCount(cbox)
+{
+    if (cbox.checked)
+    {
+        $(".counts").removeAttr("hidden");
+        SHOW_COUNT = true;
+    }
+    else
+    {
+        $(".counts").attr("hidden", true);
+        SHOW_COUNT = false;
+    }
+}
+
 function onDoubleAfterSplit(cbox)
 {
     if (cbox.checked)
@@ -155,11 +171,25 @@ function onDecksChange(val)
 function onResetStats(btn)
 {
     resetStats();
+    $(".countChecker input").focus();
 }
 
 function onSurrenderRuleChange(val)
 {
     saveToCache("bjTrainerSurrenderRules", parseInt(val));
+}
+
+function onSubmitCount(input)
+{
+    console.info(parseInt(input.value), input.value)
+    if (parseInt(input.value) === BJ_RUNNING_COUNT)
+    {
+        $(".countCheckResponse").text("Correct!").css("color", "white");
+    }
+    else
+    {
+        $(".countCheckResponse").text("Wrong, the count is " + BJ_RUNNING_COUNT).css("color", "black");
+    }
 }
 
 $('#chartModal').on('show.bs.modal', function (event) {

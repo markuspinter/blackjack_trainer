@@ -46,15 +46,22 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 999;
+    z-index: 998;
 }
 
-#titleBar > *, .btn
+#titleBar > *
 {
     font-size: 1rem;
     margin: .5rem;
     white-space: nowrap;
     overflow: hidden;
+    text-overflow: clip;
+}
+
+.btn
+{
+    font-size: 1rem;
+    white-space: nowrap;
     text-overflow: clip;
 }
 
@@ -79,7 +86,7 @@ body {
     width: 40%;
 }
 
-.resultLabel, .decisionLabel {
+.uiLabel {
     text-align: center;
     font: var(--scoreSize) Helvetica, SansSerif;
     color: white;
@@ -260,7 +267,7 @@ i {
     border-top: 1px solid white;
 }
 
-.sidebar .statistics
+.sidebar .uiBox
 {
     border-left: none;
     border-right: none;
@@ -287,7 +294,7 @@ i {
     border-color: white;
 }
 
-.statistics > * {
+.uiBox > * {
     color: white;
     font-size: var(--textSize);
     margin: .5rem 0 .5rem 0;
@@ -295,27 +302,21 @@ i {
     text-align: right;
 }
 
-.statistics p:nth-last-child(1)
-{
-    margin-right: .5rem;
-}
-
 .statLabel {
     float: left;
     margin-right: .5rem;
 }
 
-.statistics {
+.uiBox {
     position: fixed;
     top: calc(var(--navbarHeight) + 1rem); /*Be sure to make spaces between operands and operator*/
     left: 1rem;
-    z-index: 999;
+    z-index: 998;
     border: 1px solid white;
     display: flex;
     flex-direction: column;
     /* max-width: 20%;
     min-width: 15rem; */
-    width: 20%;
     padding: .5rem;
     border-radius: 4px;
     background-color: var(--primaryColor);
@@ -339,6 +340,63 @@ i {
     margin-top: .5rem;
     margin-bottom: .5rem;
     font-size: var(--textSize);
+}
+
+.counts {
+    left: initial;
+    right: calc(16.66% + 1rem);
+}
+
+.countChecker
+{
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 37%;
+    width: 20rem;
+    z-index: 999;
+    box-shadow: 0 0 0 99999px rgba(0, 0, 0, .5);
+    display: block;
+}
+
+.countChecker .btn
+{
+    margin-left: 1rem;
+    overflow: visible;
+}
+
+.countChecker input, .countChecker input:focus
+{
+    border: 1px solid white;
+    background-color: var(--primaryColor);
+    color: white;
+    caret-color: white;
+    box-shadow: none;
+    text-align: center;
+}
+
+.countChecker input[type=number]::-webkit-outer-spin-button,
+.countChecker input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.countChecker input[type=number] {
+    -moz-appearance:textfield;
+}
+
+.countChecker input::selection
+{
+    background-color: darkgreen;
+}
+
+.countChecker input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: white;
+    opacity: 1; /* Firefox */
+}
+
+.countChecker input:focus::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    opacity: 0; /* Firefox */
 }
 
 @keyframes rotation {
@@ -398,6 +456,20 @@ i {
         display: block;
         color: white;
         
+    }
+
+    .counts {
+        transform: translateX(-50%);
+        left: 50%;
+        right: initial;
+        top: initial;
+        bottom: 1rem;
+        width: 60%;
+    }
+
+    .counts p {
+        margin-top: .2rem;
+        margin-bottom: .2rem;
     }
 
     .gameButton {

@@ -35,6 +35,39 @@ const cardsValues = {
     "AC" : 11, "2C": 2, "3C": 3, "4C": 4, "5C": 5, "6C": 6, "7C": 7, "8C": 8, "9C": 9, "TC": 10, "JC": 10, "QC": 10, "KC": 10
 };
 
+const hiLowValues = {
+    "A" : -1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 0, "8": 0, "9": 0, "T": -1, "J": -1, "Q": -1, "K": -1,
+}
+
+var BJ_RUNNING_COUNT = 0;
+var BJ_CARDS_DEALT = 0;
+var BJ_TRUE_COUNT = 0;
+var SHOW_COUNT = false;
+
+function bjResetCount(card)
+{
+    BJ_RUNNING_COUNT = 0;
+    BJ_CARDS_DEALT = 0;
+    BJ_TRUE_COUNT = 0;
+}
+
+function bjUpdateCount(card)
+{
+    BJ_RUNNING_COUNT += hiLowValues[card.charAt(0)];
+    BJ_CARDS_DEALT += 1;
+
+    if (DECK_PRACTICE_MODE === BJ_DECK_MODE.NORMAL)
+    {
+        let decksLeft = ((DECK_SIZE * 52) - BJ_CARDS_DEALT) / 52;
+
+        BJ_TRUE_COUNT = BJ_RUNNING_COUNT / decksLeft;
+        $(".decksLeft .statValue").text(decksLeft.toFixed(1));
+        $(".trueCount .statValue").text(BJ_TRUE_COUNT.toFixed(2));
+    }
+
+    $(".runningCount .statValue").text(BJ_RUNNING_COUNT);
+}
+
 function bjIsPair(handCards)
 {
     return handCards.every(card => card.charAt(0) === handCards[0].charAt(0)) && handCards.length == 2;
@@ -206,6 +239,10 @@ function bjDealCard(hand, handCardsArray, count=1, isFaceDown=false)
                 setCardTexture(card, nextCard, isFaceDown);
                 hand.append(cardContainer);
                 handCardsArray.push(nextCard);
+                if (!isFaceDown)
+                {
+                    bjUpdateCount(nextCard);
+                }
             }
             
         }
@@ -225,6 +262,10 @@ function bjDealCard(hand, handCardsArray, count=1, isFaceDown=false)
             setCardTexture(card, nextCard, isFaceDown);
             hand.append(cardContainer);
             handCardsArray.push(nextCard);
+            if (!isFaceDown)
+            {
+                bjUpdateCount(nextCard);
+            }
 
             nextCardSuit = ["S", "H", "D", "C"][getRandomIntInclusive(0,3)];
 
@@ -243,6 +284,10 @@ function bjDealCard(hand, handCardsArray, count=1, isFaceDown=false)
                 hand.append(cardContainer);
             }
             handCardsArray.push(nextCard);
+            if (!isFaceDown)
+            {
+                bjUpdateCount(nextCard);
+            }
         }
         else
         {
@@ -272,6 +317,10 @@ function bjDealCard(hand, handCardsArray, count=1, isFaceDown=false)
             setCardTexture(card, nextCard, isFaceDown);
             hand.append(cardContainer);
             handCardsArray.push(nextCard);
+            if (!isFaceDown)
+            {
+                bjUpdateCount(nextCard);
+            }
         }
     }
     
@@ -375,6 +424,7 @@ function bjPlayDealerAndEvaluate()
 {
     let facedDownCards = dealerHand.find("[faceddown='true']");
     setCardTexture(facedDownCards, facedDownCards.attr("type")); //only works for one card
+    bjUpdateCount(facedDownCards.attr("type"));
 
     let [score, isSoftScore] = bjCheckPlayerScore(dealerHand, dealerHandCards);
 

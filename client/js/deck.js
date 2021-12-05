@@ -13,6 +13,7 @@ const fisherYatesShuffle = array => {
 
 function generateDecks()
 {
+    bjResetCount(); //@TODO: move out of here
     deck = [];
     playedCards = [];
     for (let i=0; i<DECK_SIZE; i++)
@@ -23,15 +24,15 @@ function generateDecks()
     {
         fisherYatesShuffle(deck);
     }
-    deck[1] = "AS";
-    deck[2] = "5C";
-    deck[0] = "JC";
-    deck[4] = "6S";
-    deck[5] = "JS";
-    deck[6] = "5S";
-    deck[7] = "JS";
+    // deck[1] = "AS";
+    // deck[2] = "5C";
+    // deck[0] = "JC";
+    // deck[4] = "6S";
+    // deck[5] = "JS";
+    // deck[6] = "5S";
+    // deck[7] = "JS";
 
-    deck[3] = "AC";
+    // deck[3] = "AC";
     console.log(deck);
 }
 
