@@ -1,0 +1,27 @@
+.input-group-prepend, .input-group-append
+{
+    border-color: white;
+    color: white;
+}
+
+.input-group-prepend .btn, .input-group-append .btn
+{
+    padding: 0;
+}
+
+
+.input-group-text {
+    background-color: white;
+
+}
+
+.spinnerGroup.subGroup .input-group-prepend .btn, .spinnerGroup.subGroup .input-group-append .btn {
+    border-radius: 0;
+    border-color: rgb(206, 212, 218);
+    font-weight: lighter;
+}
+
+.spinnerGroup.subGroup {
+    flex-wrap: nowrap;
+    width: 10rem;
+}

@@ -12,6 +12,8 @@
 
     <link href="css/styles.css" rel="stylesheet">
     </link>
+    <link href="css/spinner.css" rel="stylesheet">
+    </link>
     <link href="css/sidebar.css" rel="stylesheet">
     </link>
 
@@ -20,7 +22,7 @@
 
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
     <meta name="viewport"
-        content="user-scalable=0, initial-scale=0.6, maximum-scale=0.6, minimum-scale=0.6, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        content="user-scalable=0, initial-scale=0.6, maximum-scale=0.6, minimum-scale=0.6, width=device-width, height=device-height />
 
 </head>
 
@@ -31,20 +33,20 @@
     </div>
 
 
-    <div id="titleBar" style="margin-bottom: -2rem;">
+    <div id="titleBar" class="container-fluid" style="margin-bottom: -2rem;">
 
-        <h1 id="title">BlackJack Trainer</h1>
-        <div>
+        <h1 id="title" >BlackJack Trainer</h1>
+        <div class="p-1 titleCheckboxContainer">
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="showHandTotalCbox"
-                    onchange="onShowHandTotal(this);" style="margin-top: 0rem;">
+                    onchange="onShowHandTotal(this);">
                 <label class="form-check-label" for="showHandTotalCbox">
                     Show hand total
                 </label>
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="showCountCbox"
-                    onchange="onShowCount(this);" style="margin-top: 0rem;">
+                    onchange="onShowCount(this);">
                 <label class="form-check-label" for="showCountCbox">
                     Show count
                 </label>
@@ -54,7 +56,7 @@
             data-target="#settingsModal">Settings</button>
         <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#chartModal">Strategy
             Chart</button>
-        <p id="versionLabel">v<span id="version">1.0.0</span></p>
+        <p id="versionLabel" style="visibility: hidden;" class="col-2">v<span id="version">1.0.0</span></p>
     </div>
     <div class="content container-fluid">
         <hr />
@@ -65,11 +67,11 @@
                         style="overflow: auto; height: calc(100% - var(--buttonsHeight));">
                         <p class="uiLabel resultLabel"></p>
                         <p class="uiLabel decisionLabel"></p>
-                        <div class="uiBox countChecker">
-                            <p class="uiLabel countCheckResponse w-100 text-center">Enter Running Count...</p>
-                            <div class="d-flex">
-                                <input type="text" class="form-control" aria-label="Enter Running Count..." placeholder="Enter Running Count..." onkeypress="onEnter(onSubmitCount, this);" oninput="onlyInteger(this);">
-                                <button type="button" class="btn btn-secondary" onclick="onSubmitCount($(this).siblings()[0]);">Submit</button>
+                        <div class="uiBox countChecker" hide="true">
+                            <div class="d-flex flex-column justify-content-center w-80 m-auto p-2 align-items-center">
+                                <p class="countCheckResponse w-100 text-center">Enter Running Count</p>
+                                <input id="askCount" type="number" defaultValue="0" class="form-control boardInput" aria-label="Enter Running Count..." onkeydown="onEnter(onSubmitCount,this);">
+                                <button type="button" class="btn btn-secondary m-2 w-50" onclick="onSubmitCount($('#askCount')[0]);">Submit</button>
                             </div>
                         </div>
                         <div class="row justify-content-center dealerContainer">
@@ -207,6 +209,16 @@
                         onchange="onSurrenderRulesChange(value);updateStrategy();">
                         <option selected value="0">Late Surrender</option>
                     </select>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">Ask count after</span>
+                        </div>
+                        <input class="form-control" type="number" min="0" step="1" value="0" defaultValue="0" inputmode="numeric" id="askCountSetting" oninput="onPostfixUpdate(this, 'never', 'hand', 'hands');"
+                        onchange="onAskCountChange(this);">
+                        <div class="input-group-append">
+                          <span class="input-group-text postfix">hands</span>
+                        </div>
+                      </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -227,6 +239,13 @@
         // $("#version").load("version.txt", function () {
 
         // });
+    </script>
+
+    <script src="lib/bootstrap-input-spinner.js"></script>
+    <script>
+        
+        $("input.boardInput[type='number']").inputSpinner({ "buttonsClass": "btn-secondary", "groupClass": "spinnerGroup"});
+        $("input[type='number']:not(.boardInput)").inputSpinner({"groupClass": "spinnerGroup subGroup"});
     </script>
 
     <script src="js/utils.js"></script>

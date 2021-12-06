@@ -8,10 +8,10 @@ $(window).on("load", function()
     //     testCards();
     // }, 6000);
     // alertAndDispose("test", 1000);
-    console.log(isMobile());    
+    console.log(isMobile());
 });
 
-var WAIT_FOR_USER_INPUT = true;
+var WAIT_FOR_USER_INPUT = false;
 
 DOUBLE_AFTER_SPLIT = getFromLocalStorageOrDefault("bjTrainerDAS", defaultVal=true);
 $("#doubleAfterSplitCbox")[0].checked = DOUBLE_AFTER_SPLIT;
@@ -38,7 +38,7 @@ bjNewRound();
 
 if (isMobile() && window.matchMedia("(orientation: portrait)").matches)
 {
-    
+    $("#versionLabel").attr("hidden", true);
     $(".chatButton").removeAttr("hidden");
     $("#chat").children().removeAttr("hidden");
     $("#chat").removeClass("col-2");
@@ -46,6 +46,7 @@ if (isMobile() && window.matchMedia("(orientation: portrait)").matches)
 }
 else
 {
+    $("#versionLabel").removeAttr("hidden");
     $("#chat").removeClass("sidebar");
 }
 
@@ -171,7 +172,6 @@ function onDecksChange(val)
 function onResetStats(btn)
 {
     resetStats();
-    $(".countChecker input").focus();
 }
 
 function onSurrenderRuleChange(val)
@@ -190,7 +190,71 @@ function onSubmitCount(input)
     {
         $(".countCheckResponse").text("Wrong, the count is " + BJ_RUNNING_COUNT).css("color", "black");
     }
+    setTimeout(() => {
+        $(".countChecker").attr("hide", "true");
+        $("body").trigger("focus");
+    }, 500);
+    // setTimeout(() => {
+    //     $(".countChecker").attr("hidden", "true");
+    // }, 1700);
 }
+
+function askForCount()
+{
+    $(".countChecker").attr("hide", "false");
+    $(".countCheckResponse").text("Enter Running Count");
+    $(".countCheckResponse").css("color", "white");
+    setTimeout(() => {
+        $(".countChecker input").trigger("focus");
+    }, 400);
+}
+
+function onAskCountChange(input)
+{
+    let val = parseInt(input.value);
+    BJ_CHECK_COUNT = val;
+    if (val === 0)
+    {
+        input.value = "never";
+    }
+    else if (val === 1)
+    {
+        $(this).siblings().find("span").text("hand");
+    }
+    else
+    {
+        $(this).siblings().find("span").text("hands");
+    }
+}
+
+function onPostfixUpdate(input, zeroStr, oneStr, elseStr)
+{
+    let postfix = $(input).parent().find(".postfix");
+    let val = parseInt(input.value);
+    if (val === 0)
+    {
+        postfix.text(zeroStr);
+    }
+    else if (val === 1)
+    {
+        postfix.text(oneStr);
+    }
+    else
+    {
+        postfix.text(elseStr);
+    }
+
+}
+
+$("input").focusin(function() {
+    WAIT_FOR_USER_INPUT = true;
+});
+
+$("input").focusout(function() {
+    WAIT_FOR_USER_INPUT = false;
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0;
+});
 
 $('#chartModal').on('show.bs.modal', function (event) {
     // var button = $(event.relatedTarget) // Button that triggered the modal
@@ -201,3 +265,10 @@ $('#chartModal').on('show.bs.modal', function (event) {
     modal.find('.modal-title').text(BLACKJACK_STRATEGY_CHART[1]);
     modal.find('#chartImg').attr("src", BLACKJACK_STRATEGY_CHART[0]);
   })
+
+  $(window).bind(
+    'touchmove',
+     function(e) {
+      e.preventDefault();
+    }
+  );

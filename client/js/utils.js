@@ -98,32 +98,82 @@ function getFromLocalStorageOrDefault(key, defaultVal=0)
     return val;
 }
 
-function onlyInteger(input) {
-    var val = input.value
+$("input.intOnly, input.posIntOnly").on("keydown", function (evt) {
+    let keycode = (evt.keyCode ? evt.keyCode : evt.which);
+    let str = $(evt.target).attr("str") || "";
 
-    console.info(val);
+    if (keycode === 8) // backspace
+    {
+        $(evt.target).attr("str", str.slice(0,-1));
+    }
+});
+
+$("input.intOnly, input.posIntOnly").on("keypress", function (evt) {
+    let keycode = (evt.keyCode ? evt.keyCode : evt.which);
+    let key = String.fromCharCode(keycode);
+    console.info(keycode, key)
+
+    let str = $(evt.target).attr("str") || "";
+
+    $(evt.target).attr("str", str+key);
+});
+
+$('input').on('click', function () {
+    $(this).focus();   // inside this function the focus works
+    focused = $(this); // to point to currently focused
+});
+
+$("input.intOnly").on("input", function (evt) {
+    evt.preventDefault();
+    let input = evt.target;
+    var val = $(input).attr("str");
 
     let int = parseInt(val);
+    console.log(val, int, isNaN(int));
     if (isNaN(int))
     {
-        if (val.charAt(0) === '-')
+        if (val !== "-")
         {
-            input.value = '-';
+            console.info(val.slice(0, -1))
+            input.value = val.slice(0, -1);
+            $(input).attr("str", val.slice(0, -1));
         }
-        else
-        {
-            input.value = '';
-        }
+        
     }
     else
     {
-        input.value =  int;
+        input.value = int;
+        $(input).attr("str", int);
     }
-    
-}
+    // input.value = "-";
+    // $(input).attr("str", "-");
+});
+
+$("input.posIntOnly").on("input", function (evt) {
+    evt.preventDefault();
+    let input = evt.target;
+    var val = $(input).attr("str");
+
+    let int = parseInt(val);
+    console.log(val, int, isNaN(int));
+    if (isNaN(int))
+    {
+        input.value = val.slice(0, -1);
+        $(input).attr("str", val.slice(0, -1));
+    }
+    else
+    {
+        input.value = int;
+        $(input).attr("str", int);
+    }
+    // input.value = "-";
+    // $(input).attr("str", "-");
+});
+
 
 function onEnter(func, arg)
 {
+    console.log(arg)
     var keycode = (event.keyCode ? event.keyCode : event.which);
     if(keycode == '13'){
         func(arg);

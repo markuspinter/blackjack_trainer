@@ -42,6 +42,8 @@ const hiLowValues = {
 var BJ_RUNNING_COUNT = 0;
 var BJ_CARDS_DEALT = 0;
 var BJ_TRUE_COUNT = 0;
+var BJ_CHECK_COUNT = 0;
+var BJ_ROUNDS_IN = 0;
 var SHOW_COUNT = false;
 
 function bjResetCount(card)
@@ -160,6 +162,19 @@ function bjSwitchPlayer(playerID)
     }
 }
 
+function bjNewDeck(newRound=true)
+{
+    BJ_ROUNDS_IN = 0;
+
+    generateDecks();
+    bjRoundFinished();
+
+    if (newRound)
+    {
+        bjNewRound();
+    }
+}
+
 function bjNewRound()
 {
     try
@@ -201,9 +216,7 @@ function bjNewRound()
     {
         console.error(e);
         alertAndDispose(e);
-        generateDecks();
-        bjRoundFinished();
-        // bjNewRound();
+        bjNewDeck(false);
     }
 }
 
@@ -212,6 +225,11 @@ function bjRoundFinished()
     $("#newRound").removeAttr("disabled");
     $(".gameAction").attr("disabled", true);
     $(".score").removeAttr("hidden");
+    BJ_ROUNDS_IN++;
+    if (BJ_ROUNDS_IN % BJ_CHECK_COUNT == 0)
+    {
+        askForCount();
+    }
     bjTimer.stop();
     bjTimer.reset();
 }
@@ -414,9 +432,7 @@ function bjHit()
     catch (e) {
         console.error(e);
         alertAndDispose(e);
-        generateDecks();
-        bjRoundFinished();
-        bjNewRound();
+        bjNewDeck();
     }
 }
 
@@ -559,9 +575,7 @@ function bjStand()
     catch (e) {
         console.error(e);
         alertAndDispose(e);
-        generateDecks();
-        bjRoundFinished();
-        bjNewRound();
+        bjNewDeck();
     }
 }
 
