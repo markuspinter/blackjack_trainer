@@ -137,7 +137,7 @@ function statsAddResult(result)
     changeStat($(".winLooseRatio .statValue"), WIN_LOOSE_RATIO);
 }
 
-function statsAddTime(time, saveToCache=true)
+function statsAddTime(time)
 {
     TIME_MEASUREMENTS.push(time);
 
@@ -149,9 +149,6 @@ function statsAddTime(time, saveToCache=true)
     }
     TIME_AVERAGE += time/TIME_MEASUREMENTS_COUNT;
 
-    if (saveToCache)
-    {
-        saveToCache("bjTrainerTimeMeasurements", JSON.stringify(TIME_MEASUREMENTS));
-    }
+    saveToCache("bjTrainerTimeMeasurements", JSON.stringify(TIME_MEASUREMENTS));
     changeStat($(".timeAvg .statValue"), TIME_AVERAGE.toFixed(3));
 }

@@ -178,6 +178,7 @@ function onSubmitCount(input)
     setTimeout(() => {
         $(".countChecker").attr("hide", "true");
         $("body").trigger("focus");
+        onDisableOtherClick(false, "countChecker");
     }, 500);
     // setTimeout(() => {
     //     $(".countChecker").attr("hidden", "true");
@@ -189,6 +190,8 @@ function askForCount()
     $(".countChecker").attr("hide", "false");
     $(".countCheckResponse").text("Enter Running Count");
     $(".countCheckResponse").css("color", "white");
+    WAIT_FOR_USER_INPUT = true;
+    onDisableOtherClick(true, "countChecker");
     setTimeout(() => {
         $(".countChecker input").trigger("focus");
     }, 400);

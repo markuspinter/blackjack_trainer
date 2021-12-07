@@ -172,6 +172,40 @@ $("input.posIntOnly").on("input", function (evt) {
     // $(input).attr("str", "-");
 });
 
+function disableHandler(evt)
+{
+    console.log("hello")
+    evt.preventDefault();
+}
+
+var clickHandlers = {};
+function onDisableOtherClick(disable, parentclass)
+{
+    if (disable)
+    {
+        $( ".btn:not(."+parentclass+" *)" ).each(function(ind){
+            console.log(this, ".btn:not(."+parentclass+" *)")
+            if (this.onclick != null)
+            {
+                clickHandlers[ind] = this.onclick;
+                console.log(this.onclick)
+                this.onclick = null;
+            }
+            
+        });
+    }
+    else
+    {
+        $( ".btn:not(."+parentclass+" *)" ).each(function(ind){
+
+            this.onclick = clickHandlers[ind];
+            console.log(this, clickHandlers[ind])
+            console.log(this.onclick)
+            
+        });
+    }
+}
+
 
 function onEnter(func, arg)
 {
