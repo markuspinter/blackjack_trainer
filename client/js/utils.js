@@ -35,10 +35,12 @@ document.onkeydown = function (event) {
     else if (event.code === "KeyG")
     {
         $("#hit:enabled").click();
+        $("#nextPair:enabled").click();
     }
     else if (event.code === "KeyF")
     {
         $("#stand:enabled").click();
+        $("#next:enabled").click();
     }
     else if (event.code === "KeyD")
     {

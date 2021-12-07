@@ -1,15 +1,15 @@
 const TIME_MEASUREMENTS_COUNT = 10;
 
-var HANDS_PLAYED = changeStat($(".handsPlayed .statValue"), loadStatFromCache("bjTrainerHandsPlayed"));
-var WRONG_DECISIONS = changeStat($(".decisionsWrong .statValue"), loadStatFromCache("bjTrainerWrongDecisions"));
-var CORRECT_DECISIONS = loadStatFromCache("bjTrainerCorrectDecisions");
+var HANDS_PLAYED = changeStat($(".handsPlayed .statValue"), loadStatFromCache("cdTrainerHandsPlayed"));
+var WRONG_DECISIONS = changeStat($(".decisionsWrong .statValue"), loadStatFromCache("cdTrainerWrongDecisions"));
+var CORRECT_DECISIONS = loadStatFromCache("cdTrainerCorrectDecisions");
 changeStat($(".decisionsCorrect .statValue"), CORRECT_DECISIONS);
 var DECISIONS = changeStat($(".decisions .statValue"), (WRONG_DECISIONS + CORRECT_DECISIONS));
-var HANDS_WON = loadStatFromCache("bjTrainerHandsWon");
-var HANDS_PUSH = loadStatFromCache("bjTrainerHandsPush");
+var HANDS_WON = loadStatFromCache("cdTrainerHandsWon");
+var HANDS_PUSH = loadStatFromCache("cdTrainerHandsPush");
 var DECISION_SCORE = changeStat($(".decisionsScore .statValue"), CheckNaN((CORRECT_DECISIONS/(WRONG_DECISIONS+CORRECT_DECISIONS)*100).toFixed(2)));
 var WIN_LOOSE_RATIO = changeStat($(".winLooseRatio .statValue"), CheckNaN(((HANDS_WON/(HANDS_PLAYED-HANDS_PUSH))*100).toFixed(2)));
-var TIME_MEASUREMENTS = loadStatFromCache("bjTrainerTimeMeasurements", []);
+var TIME_MEASUREMENTS = loadStatFromCache("cdTrainerTimeMeasurements", []);
 if (TIME_MEASUREMENTS.length > TIME_MEASUREMENTS_COUNT)
 {
     TIME_MEASUREMENTS = TIME_MEASUREMENTS.splice(-TIME_MEASUREMENTS_COUNT,TIME_MEASUREMENTS_COUNT);
@@ -29,10 +29,10 @@ function CheckNaN(val, valIfUndefined=0)
 function resetStats()
 {
     WRONG_DECISIONS = 0;
-    changeStatAndSaveToCache($(".decisionsWrong .statValue"), "bjTrainerWrongDecisions", WRONG_DECISIONS);
+    changeStatAndSaveToCache($(".decisionsWrong .statValue"), "cdTrainerWrongDecisions", WRONG_DECISIONS);
 
     CORRECT_DECISIONS = 0;
-    saveToCache("bjTrainerCorrectDecisions", CORRECT_DECISIONS);
+    saveToCache("cdTrainerCorrectDecisions", CORRECT_DECISIONS);
     changeStat($(".decisionsCorrect .statValue"), CORRECT_DECISIONS);
     
     DECISIONS = 0;
@@ -41,22 +41,22 @@ function resetStats()
     changeStat($(".decisions .statValue"), DECISIONS);
 
     HANDS_PLAYED = 0;
-    changeStatAndSaveToCache($(".handsPlayed .statValue"), "bjTrainerHandsPlayed", HANDS_PLAYED);
+    changeStatAndSaveToCache($(".handsPlayed .statValue"), "cdTrainerHandsPlayed", HANDS_PLAYED);
 
     HANDS_WON = 0;
-    saveToCache("bjTrainerHandsWon", HANDS_WON);
+    saveToCache("cdTrainerHandsWon", HANDS_WON);
         
     HANDS_PUSH = 0;
-    saveToCache("bjTrainerHandsPush", HANDS_PUSH);
+    saveToCache("cdTrainerHandsPush", HANDS_PUSH);
     
     WIN_LOOSE_RATIO = 0;
     changeStat($(".winLooseRatio .statValue"), WIN_LOOSE_RATIO);
 
     TIME_MEASUREMENTS = [];
     TIME_AVERAGE = 0;
-    saveToCache("bjTrainerTimeMeasurements", JSON.stringify(TIME_MEASUREMENTS));
+    saveToCache("cdTrainerTimeMeasurements", JSON.stringify(TIME_MEASUREMENTS));
     changeStat($(".timeAvg .statValue"), TIME_AVERAGE.toFixed(3));
-    bjTimer.reset();
+    cdTimer.reset();
 }
 
 function loadStatFromCache(key, defaultVal=0)
@@ -99,12 +99,12 @@ function statsAddDecision(decision)
     if (decision === DECISION.WRONG)
     {
         WRONG_DECISIONS++;
-        changeStatAndSaveToCache($(".decisionsWrong .statValue"), "bjTrainerWrongDecisions", WRONG_DECISIONS);
+        changeStatAndSaveToCache($(".decisionsWrong .statValue"), "cdTrainerWrongDecisions", WRONG_DECISIONS);
     }
     else if (decision === DECISION.CORRECT)
     {
         CORRECT_DECISIONS++;
-        saveToCache("bjTrainerCorrectDecisions", CORRECT_DECISIONS);
+        saveToCache("cdTrainerCorrectDecisions", CORRECT_DECISIONS);
         changeStat($(".decisionsCorrect .statValue"), CORRECT_DECISIONS);
     }
     else
@@ -120,24 +120,24 @@ function statsAddDecision(decision)
 function statsAddResult(result)
 {
     HANDS_PLAYED++;
-    changeStatAndSaveToCache($(".handsPlayed .statValue"), "bjTrainerHandsPlayed", HANDS_PLAYED);
+    changeStatAndSaveToCache($(".handsPlayed .statValue"), "cdTrainerHandsPlayed", HANDS_PLAYED);
 
     if (result === RESULT.WON)
     {
         HANDS_WON++;
-        saveToCache("bjTrainerHandsWon", HANDS_WON);
+        saveToCache("cdTrainerHandsWon", HANDS_WON);
         
     }
     if (result === RESULT.PUSH)
     {
         HANDS_PUSH++;
-        saveToCache("bjTrainerHandsPush", HANDS_PUSH);
+        saveToCache("cdTrainerHandsPush", HANDS_PUSH);
     }
     WIN_LOOSE_RATIO = ((HANDS_WON/(HANDS_PLAYED-HANDS_PUSH))*100).toFixed(2);
     changeStat($(".winLooseRatio .statValue"), WIN_LOOSE_RATIO);
 }
 
-function statsAddTime(time, saveToCache=true)
+function statsAddTime(time)
 {
     TIME_MEASUREMENTS.push(time);
 
@@ -149,9 +149,6 @@ function statsAddTime(time, saveToCache=true)
     }
     TIME_AVERAGE += time/TIME_MEASUREMENTS_COUNT;
 
-    if (saveToCache)
-    {
-        saveToCache("bjTrainerTimeMeasurements", JSON.stringify(TIME_MEASUREMENTS));
-    }
+    saveToCache("cdTrainerTimeMeasurements", JSON.stringify(TIME_MEASUREMENTS));
     changeStat($(".timeAvg .statValue"), TIME_AVERAGE.toFixed(3));
 }
