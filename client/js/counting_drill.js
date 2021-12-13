@@ -17,6 +17,40 @@ var CD_TRUE_COUNT = 0;
 var CD_CHECK_COUNT = 0;
 var CD_ROUNDS_IN = 0;
 var SHOW_COUNT = false;
+var CD_NEXT_CARD_TIME = 0;
+var CD_NEXT_CARD_TIME_CHANGED = true;
+
+const CD_MODE =
+{
+    NONE: 0,
+    ONE: 1,
+    TWO: 2
+}
+
+var CD_CARD_MODE = CD_MODE.NONE;
+
+var cdCardTimer = new CountdownTimer($("#countdownTimer")[0], CD_NEXT_CARD_TIME, cdTimerExpired, {
+    delay: 10,
+    precision: 1
+});
+
+function cdStopTimer()
+{
+    cdCardTimer.stop();
+}
+
+function cdTimerExpired()
+{
+    console.log("expired");
+    cdNextCard();
+}
+
+function cdUpdateTimer()
+{
+    cdCardTimer.setStartTime(CD_NEXT_CARD_TIME*1000);
+    cdStopTimer();
+    console.log("updateTimer")
+}
 
 function bjResetCount(card)
 {
@@ -57,9 +91,17 @@ function cdCreatePlayer()
 function cdNewDeck(newRound=true)
 {
     CD_ROUNDS_IN = 0;
-    cdTimer.stop();
-    statsAddTime(cdTimer.reset());
 
+    if (CD_NEXT_CARD_TIME > 0)
+    {
+        cdCardTimer.stop();
+    }
+    else
+    {
+        cdTimer.stop();
+        statsAddTime(cdTimer.reset());
+    }
+    
     generateDecks();
 
     $("#newRound").removeAttr("disabled");
@@ -80,6 +122,7 @@ function cdNewRound()
         $("#playerHands").empty();
         [playerHand, currPlayerID] = cdCreatePlayer();
 
+        cdCardTimer.stop();
         cdTimer.reset();
 
         $("#newRound").attr("disabled", true);
@@ -99,6 +142,7 @@ function cdRoundFinished()
     CD_ROUNDS_IN++;
     if (CD_ROUNDS_IN % CD_CHECK_COUNT == 0)
     {
+        cdCardTimer.stop();
         askForCount();
     }
     cdTimer.reset();
@@ -127,14 +171,31 @@ function cdDealCard(hand, handCardsArray, count=1, isFaceDown=false)
     
 }
 
-
-function cdNext()
+function cdNextCard()
 {
     try {
-        cdTimer.start();
+        if (CD_NEXT_CARD_TIME > 0)
+        {
+            if (CD_NEXT_CARD_TIME_CHANGED)
+            {
+                cdTimer.stop();
+                cdTimer.reset();
+            }
+            cdCardTimer.reset();
+            cdCardTimer.start();
+        }
+        else
+        {
+            if (CD_NEXT_CARD_TIME_CHANGED)
+            {
+                cdCardTimer.stop();
+                cdCardTimer.reset();
+            }
+            statsAddTime(cdTimer.reset());
+            cdTimer.start();
+        }
         $(playerHand).empty();
-        cdDealCard(playerHand, playerHandCards);
-        statsAddTime(cdTimer.reset());
+        cdDealCard(playerHand, playerHandCards, CD_CARD_MODE);
         cdRoundFinished();
         if (deck.length === 0)
         {
@@ -149,23 +210,16 @@ function cdNext()
     }
 }
 
+function cdNext()
+{
+    CD_CARD_MODE = CD_MODE.ONE;
+
+    cdNextCard();
+}
+
 function cdNextPair()
 {
-    try {
-        cdTimer.start();
-        $(playerHand).empty();
-        cdDealCard(playerHand, playerHandCards, 2);
-        statsAddTime(cdTimer.reset());
-        cdRoundFinished();
-        if (deck.length === 0)
-        {
-            alertAndDispose("Shoe is empty!");
-            cdNewDeck(false);
-        }
-    }
-    catch (e) {
-        console.error(e);
-        alertAndDispose(e);
-        cdNewDeck(false);
-    }
+    CD_CARD_MODE = CD_MODE.TWO;
+
+    cdNextCard(CD_MODE.TWO);
 }

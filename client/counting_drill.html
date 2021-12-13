@@ -14,6 +14,8 @@
     </link>
     <link href="css/spinner.css" rel="stylesheet">
     </link>
+    <link href="css/slider.css" rel="stylesheet">
+    </link>
     <link href="css/sidebar.css" rel="stylesheet">
     </link>
 
@@ -56,7 +58,8 @@
                 <div id="board" class="container-fluid justify-content-center">
                     <div class="boardContent justify-content-center"
                         style="overflow: auto; height: calc(100% - var(--buttonsHeight));">
-
+                        <p class="uiLabel decisionLabel" hidden><span>Next Card in</span><br><span id="countdownTimer"
+                            ></span>&nbsp;sec</p>
                         <div class="uiBox countChecker" hide="true">
                             <div class="d-flex flex-column justify-content-center w-80 m-auto p-2 align-items-center">
                                 <p class="countCheckResponse w-100 text-center">Enter Running Count</p>
@@ -85,9 +88,20 @@
                         <button id="nextPair" type="button" class="btn btn-light gameAction gameButton"
                             onclick="cdNextPair(this)" data-toggle="tooltip" data-placement="bottom"
                             title="Next Pair (G)" disabled><i>2</i></button>
+                        <button id="stopTimer" type="button" class="btn btn-light gameButton" onclick="cdStopTimer(this)"
+                            data-toggle="tooltip" data-placement="bottom" title="Stop Timer (S)" disabled>
+                                <i class="bi bi-x-circle"></i></button>
                         <button id="newRound" type="button" class="btn btn-light gameButton" onclick="cdNewRound(this)"
                             data-toggle="tooltip" data-placement="bottom" title="New Round (R)"><i
                                 class="bi bi-check2"></i></button>
+                        <div class="row control-row">
+                            <div class="range-slider col">
+                                <label class="range-slider-label statLabel">Next Card every: </label><br>
+                                <input class="range-slider__range"
+                                    oninput="onSliderInput(this);" type="range" value="0" min="0" max="10" step=".1">
+                                <span class="range-slider__value">0</span><span>sec</span>
+                            </div>
+                        </div>
 
 
                     </div>
@@ -178,6 +192,7 @@
     <script src="js/utils.js"></script>
     <script src="js/timer.js"></script>
     <script src="js/sidebar.js"></script>
+    <script src="js/slider.js"></script>
     <script src="js/card.js"></script>
     <script src="js/deck.js"></script>
     <script src="js/cd_statistics.js"></script>

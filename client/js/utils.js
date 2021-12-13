@@ -49,6 +49,7 @@ document.onkeydown = function (event) {
     else if (event.code === "KeyS")
     {
         $("#split:enabled").click();
+        $("#stopTimer:enabled").click();
     }
     else if (event.code === "KeyA")
     {

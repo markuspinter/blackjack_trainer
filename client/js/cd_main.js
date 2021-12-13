@@ -179,6 +179,7 @@ function onSubmitCount(input)
         $(".countChecker").attr("hide", "true");
         $("body").trigger("focus");
         onDisableOtherClick(false, "countChecker");
+        cdCardTimer.start();
     }, 500);
     // setTimeout(() => {
     //     $(".countChecker").attr("hidden", "true");
@@ -255,20 +256,37 @@ $('#chartModal').on('show.bs.modal', function (event) {
     modal.find('#chartImg').attr("src", BLACKJACK_STRATEGY_CHART[0]);
   })
 
-  $(window).bind(
-    'touchmove',
-     function(e) {
-      e.preventDefault();
+$(window).bind(
+'touchmove',
+    function(e) {
+        e.preventDefault();
     }
-  );
+);
 
-  $('.btn').bind('touchend', function(e) {
-    e.preventDefault();
-    // Add your code here. 
-    if (!$(this).attr("disabled"))
+$('.btn').bind('touchend', function(e) {
+e.preventDefault();
+// Add your code here. 
+if (!$(this).attr("disabled"))
+{
+    $(this).click();
+}
+
+// This line still calls the standard click event, in case the user needs to interact with the element that is being clicked on, but still avoids zooming in cases of double clicking.
+})
+
+function onSliderInput(slider)
+{
+    CD_NEXT_CARD_TIME = parseFloat($(slider).val());
+    CD_NEXT_CARD_TIME_CHANGED = true;
+    cdUpdateTimer(CD_NEXT_CARD_TIME);
+    if (CD_NEXT_CARD_TIME !== 0)
     {
-        $(this).click();
+        $("#stopTimer").removeAttr("disabled");
+        $(".decisionLabel").removeAttr("hidden");
     }
-    
-    // This line still calls the standard click event, in case the user needs to interact with the element that is being clicked on, but still avoids zooming in cases of double clicking.
-  })
+    else
+    {
+        $("#stopTimer").attr("disabled", true);
+        $(".decisionLabel").attr("hidden", true);
+    }
+}
