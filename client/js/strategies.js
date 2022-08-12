@@ -551,7 +551,7 @@ const SINGLE_S17_NDAS =
 }
 
 const CHARTS = {
-    "FOUR_OR_MORE_S17_DAS": ["/img/4ormore_s17_das.png","FOUR-OR-MORE S17 DAS"],
+    "FOUR_OR_MORE_S17_DAS": ["img/4ormore_s17_das.png","FOUR-OR-MORE S17 DAS"],
     "FOUR_OR_MORE_S17_NDAS": ["img/4ormore_s17_ndas.png","FOUR-OR-MORE S17 NDAS"],
     "FOUR_OR_MORE_H17_DAS": ["img/4ormore_h17_das.png","FOUR-OR-MORE H17 DAS"],
     "FOUR_OR_MORE_H17_NDAS": ["img/4ormore_h17_ndas.png","FOUR-OR-MORE H17 NDAS"],
